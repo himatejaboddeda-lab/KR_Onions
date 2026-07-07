@@ -5,6 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
 <title>KR Onions Stock Update</title>
 <meta name="theme-color" content="#7A2E3D">
+<link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Ccircle cx='32' cy='32' r='30' fill='%237A2E3D'/%3E%3Ccircle cx='32' cy='32' r='23' fill='none' stroke='%23FBF3E7' stroke-width='2.5'/%3E%3Ccircle cx='32' cy='32' r='16' fill='none' stroke='%23E7C9A9' stroke-width='2.5'/%3E%3Ccircle cx='32' cy='32' r='9' fill='none' stroke='%23C98A2B' stroke-width='2.5'/%3E%3Cline x1='32' y1='9' x2='32' y2='2' stroke='%234C8C3A' stroke-width='3' stroke-linecap='round'/%3E%3C/svg%3E">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@700;800&family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
 
@@ -107,6 +108,41 @@ h1,h2,h3{font-family:"Poppins","Inter",sans-serif;font-weight:700;margin:0 0 4px
 .checkmark{width:64px;height:64px;border-radius:50%;background:var(--green);color:#fff;
   display:flex;align-items:center;justify-content:center;font-size:32px;margin:0 auto 14px;}
 .center{text-align:center;} .small-note{font-size:.8rem;color:#8a6a53;text-align:center;margin-top:10px;}
+
+/* ---- Accordion (full stock entry page) ---- */
+.accordion{background:#fff;border:2px solid var(--sack);border-radius:var(--radius);
+  box-shadow:var(--shadow);margin-bottom:14px;overflow:hidden;}
+.accordion-header{display:flex;align-items:center;gap:14px;padding:16px 18px;cursor:pointer;
+  width:100%;border:none;background:none;font:inherit;text-align:left;color:inherit;}
+.accordion-header .icon{width:44px;height:44px;border-radius:12px;display:flex;align-items:center;
+  justify-content:center;font-size:22px;flex-shrink:0;color:#fff;}
+.accordion-header .label{font-weight:700;font-size:1.02rem;color:var(--ink);}
+.accordion-header .meta{font-size:.78rem;color:#8a6a53;margin-top:1px;}
+.accordion-header .chev{margin-left:auto;color:#C9B79E;font-size:1.2rem;transition:transform .2s ease;}
+.accordion.open .accordion-header .chev{transform:rotate(90deg);}
+.accordion-body{max-height:0;overflow:hidden;transition:max-height .25s ease;}
+.accordion.open .accordion-body{max-height:2000px;}
+.accordion-body-inner{padding:4px 18px 18px;}
+
+.variety-block{border-top:1px dashed var(--sack);padding-top:14px;margin-top:14px;}
+.variety-block:first-child{border-top:none;padding-top:0;margin-top:0;}
+.variety-block .variety-name{font-weight:700;font-size:.94rem;color:var(--maroon-dk);margin-bottom:8px;}
+
+.qty-row{display:flex;gap:8px;}
+.qty-row input{flex:1;}
+.qty-row select{width:88px;flex-shrink:0;padding:14px 8px;border-radius:12px;border:2px solid var(--sack);
+  background:#fff;font-size:.92rem;color:var(--ink);font-family:inherit;}
+
+.entry-mini-field{margin-bottom:10px;}
+.entry-mini-field label{display:block;font-size:.8rem;font-weight:600;color:#8a6a53;margin-bottom:5px;}
+.entry-mini-field input,.entry-mini-field textarea{
+  width:100%;padding:12px;border-radius:10px;border:2px solid var(--sack);background:var(--cream);
+  font-size:.95rem;color:var(--ink);font-family:inherit;}
+.entry-mini-field textarea{min-height:50px;resize:vertical;}
+.entry-mini-field input:focus,.entry-mini-field textarea:focus{outline:none;border-color:var(--gold);}
+
+.onions-total-line{display:flex;justify-content:space-between;padding:10px 12px;background:var(--sack);
+  border-radius:10px;margin-bottom:12px;font-weight:700;color:var(--maroon-dk);font-size:.9rem;}
 </style>
 </head>
 <body>
@@ -167,7 +203,52 @@ h1,h2,h3{font-family:"Poppins","Inter",sans-serif;font-weight:700;margin:0 0 4px
     </div>
   </section>
 
-  <!-- ============ VIEW: PRODUCT SELECT ============ -->
+  <!-- ============ VIEW: FULL STOCK ENTRY (new single-page manager flow) ============ -->
+  <section id="view-full-entry" class="view">
+    <div class="topbar">
+      <button class="back" onclick="go('view-branch')">←</button>
+      <div class="titles"><h1 id="full-entry-branch">Branch</h1><div class="sub">Update today's stock — all products</div></div>
+    </div>
+
+    <div class="field"><label>Update Type</label>
+      <div class="pill-row" id="full-update-type-row"></div>
+    </div>
+
+    <!-- ONIONS -->
+    <div class="accordion" id="acc-onions">
+      <button class="accordion-header" onclick="toggleAccordion('acc-onions')">
+        <div class="icon icon-onion">🧅</div>
+        <div><div class="label">Onions</div><div class="meta">Small / Medium / Large</div></div>
+        <div class="chev">›</div>
+      </button>
+      <div class="accordion-body"><div class="accordion-body-inner" id="onion-fields"></div></div>
+    </div>
+
+    <!-- GARLIC -->
+    <div class="accordion" id="acc-garlic">
+      <button class="accordion-header" onclick="toggleAccordion('acc-garlic')">
+        <div class="icon icon-garlic">🧄</div>
+        <div><div class="label">Garlic</div><div class="meta">Bags, kgs/tons, remarks</div></div>
+        <div class="chev">›</div>
+      </button>
+      <div class="accordion-body"><div class="accordion-body-inner" id="garlic-fields"></div></div>
+    </div>
+
+    <!-- TAMARIND -->
+    <div class="accordion" id="acc-tamarind">
+      <button class="accordion-header" onclick="toggleAccordion('acc-tamarind')">
+        <div class="icon icon-tamarind">🍂</div>
+        <div><div class="label">Tamarind</div><div class="meta">Bags, kgs/tons, remarks</div></div>
+        <div class="chev">›</div>
+      </button>
+      <div class="accordion-body"><div class="accordion-body-inner" id="tamarind-fields"></div></div>
+    </div>
+
+    <button class="btn btn-primary" id="full-save-btn" onclick="saveFullEntry()" style="margin-top:8px;">Save Full Stock Update</button>
+    <p class="small-note">Leave a product's fields blank if there's nothing to update for it right now.</p>
+  </section>
+
+  <!-- ============ VIEW: PRODUCT SELECT (legacy — no longer in the main flow) ============ -->
   <section id="view-product" class="view">
     <div class="topbar">
       <button class="back" onclick="go('view-branch')">←</button>
@@ -365,7 +446,191 @@ function branchLogin() {
   state.branchId = b.id;
   state.branchName = b.name;
   state.managerName = name;
-  openProductSelect();
+  openFullEntry();
+}
+
+// ---- NEW: single-page full stock entry (Onions/Garlic/Tamarind together) -----
+function toggleAccordion(id) {
+  document.getElementById(id).classList.toggle("open");
+}
+
+function miniField(idPrefix, kind) {
+  if (kind === "notes") {
+    return `<div class="entry-mini-field"><label>Remarks (optional)</label>
+      <textarea id="${idPrefix}-notes" placeholder="Any remarks..."></textarea></div>`;
+  }
+  return `<div class="entry-mini-field"><label>Bags</label>
+      <input type="number" id="${idPrefix}-bags" min="0" step="1" inputmode="numeric" placeholder="e.g. 100"></div>
+    <div class="entry-mini-field"><label>Kgs or Tons</label>
+      <div class="qty-row">
+        <input type="number" id="${idPrefix}-qty" min="0" step="0.1" inputmode="decimal" placeholder="e.g. 5000">
+        <select id="${idPrefix}-unit"><option value="kg">Kg</option><option value="ton">Tons</option></select>
+      </div>
+    </div>`;
+}
+
+function openFullEntry() {
+  document.getElementById("full-entry-branch").textContent = "KR Onions - " + state.branchName;
+
+  // Update type pills (applies to the whole submission)
+  const row = document.getElementById("full-update-type-row");
+  row.innerHTML = "";
+  state.fullSelectedType = null;
+  UPDATE_TYPES.forEach(u => {
+    const pill = document.createElement("div");
+    pill.className = "pill";
+    pill.textContent = u.name;
+    pill.onclick = () => {
+      [...row.children].forEach(c => c.classList.remove("selected"));
+      pill.classList.add("selected");
+      state.fullSelectedType = u.id;
+    };
+    row.appendChild(pill);
+  });
+
+  // Onions: three variety blocks inside one accordion
+  document.getElementById("onion-fields").innerHTML = ONION_VARIETIES.map(v => `
+    <div class="variety-block">
+      <div class="variety-name">${v.name}</div>
+      ${miniField("onion-" + v.id, "qty")}
+      ${miniField("onion-" + v.id, "notes")}
+    </div>`).join("");
+
+  // Garlic / Tamarind: single field group each
+  document.getElementById("garlic-fields").innerHTML = miniField("garlic", "qty") + miniField("garlic", "notes");
+  document.getElementById("tamarind-fields").innerHTML = miniField("tamarind", "qty") + miniField("tamarind", "notes");
+
+  // Reset all inputs and collapse accordions
+  ["acc-onions", "acc-garlic", "acc-tamarind"].forEach(id => document.getElementById(id).classList.remove("open"));
+
+  go("view-full-entry");
+}
+
+// Reads one product/variety's fields; returns { skip: true } if left blank,
+// { error: "..." } if invalid, or { skip: false, payload } if ready to save.
+function readEntryFields(idPrefix, productType, variety, varietyLabel) {
+  const bagsEl = document.getElementById(`${idPrefix}-bags`);
+  const qtyEl = document.getElementById(`${idPrefix}-qty`);
+  const unitEl = document.getElementById(`${idPrefix}-unit`);
+  const notesEl = document.getElementById(`${idPrefix}-notes`);
+
+  const bags = bagsEl.value.trim();
+  const qty = qtyEl.value.trim();
+  const notes = notesEl.value.trim();
+
+  if (bags === "" && qty === "") return { skip: true };
+
+  if (bags === "" || qty === "") {
+    return { error: `${varietyLabel}: enter both bags and kgs/tons, or leave both blank.` };
+  }
+  if (isNaN(bags) || isNaN(qty)) {
+    return { error: `${varietyLabel}: bags and kgs/tons must be numbers.` };
+  }
+  if (Number(bags) < 0 || Number(qty) < 0) {
+    return { error: `${varietyLabel}: bags and kgs/tons cannot be negative.` };
+  }
+
+  const unit = unitEl.value;
+  const kgs = unit === "ton" ? Number(qty) * 1000 : Number(qty);
+
+  return {
+    skip: false,
+    payload: {
+      branchId: state.branchId, branchName: state.branchName,
+      productType, variety: variety || "none",
+      bags: Number(bags), kgs, unit, qtyEntered: Number(qty),
+      updateType: state.fullSelectedType, managerName: state.managerName, notes
+    }
+  };
+}
+
+async function saveFullEntry() {
+  if (!state.fullSelectedType) { showBanner("Please select an update type.", "error"); return; }
+
+  const toSave = [];
+  let errorMsg = null;
+
+  ONION_VARIETIES.forEach(v => {
+    const r = readEntryFields("onion-" + v.id, "onions", v.id, v.name);
+    if (r.error && !errorMsg) errorMsg = r.error;
+    if (!r.skip && r.payload) toSave.push(r.payload);
+  });
+  const garlicR = readEntryFields("garlic", "garlic", "none", "Garlic");
+  if (garlicR.error && !errorMsg) errorMsg = garlicR.error;
+  if (!garlicR.skip && garlicR.payload) toSave.push(garlicR.payload);
+
+  const tamarindR = readEntryFields("tamarind", "tamarind", "none", "Tamarind");
+  if (tamarindR.error && !errorMsg) errorMsg = tamarindR.error;
+  if (!tamarindR.skip && tamarindR.payload) toSave.push(tamarindR.payload);
+
+  if (errorMsg) { showBanner(errorMsg, "error"); return; }
+  if (toSave.length === 0) { showBanner("Enter at least one product's stock before saving.", "error"); return; }
+
+  const saveBtn = document.getElementById("full-save-btn");
+  saveBtn.disabled = true; saveBtn.textContent = "Saving...";
+
+  const saved = [];
+  try {
+    for (const payload of toSave) {
+      const res = await fetch(`${WORKER_URL}/api/records`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(payload)
+      });
+      const data = await res.json().catch(() => ({}));
+      if (!res.ok) throw new Error(data.error || `Save failed (${res.status})`);
+      saved.push(data);
+    }
+    showBanner("Full stock update saved!", "success");
+    setTimeout(() => openCombinedSummary(saved), 400);
+  } catch (err) {
+    console.error(err);
+    showBanner(`Saved ${saved.length} of ${toSave.length} items — then: ${err.message}`, "error");
+  } finally {
+    saveBtn.disabled = false; saveBtn.textContent = "Save Full Stock Update";
+  }
+}
+
+function openCombinedSummary(records) {
+  const first = records[0];
+  const onionRecords = records.filter(r => r.productType === "onions");
+  const garlicRecord = records.find(r => r.productType === "garlic");
+  const tamarindRecord = records.find(r => r.productType === "tamarind");
+
+  const lines = [
+    "KR Onions Stock Update",
+    `Branch: ${first.branchName}`,
+    `Date: ${first.dateLabel}`,
+    `Time: ${first.timeLabel}`,
+    `Update Type: ${updateTypeLabel(first.updateType)}`,
+    ""
+  ];
+
+  if (onionRecords.length > 0) {
+    const onionTotalBags = onionRecords.reduce((s, r) => s + Number(r.bags || 0), 0);
+    lines.push(`Onions Total Bags: ${fmtNum(onionTotalBags)}`);
+    onionRecords.forEach(r => lines.push(`- ${lineLabel(r)}: ${fmtNum(r.bags)} bags, ${fmtNum(r.kgs)} kgs`));
+    lines.push("");
+  }
+  if (garlicRecord) {
+    lines.push(`Garlic: ${fmtNum(garlicRecord.bags)} bags, ${fmtNum(garlicRecord.kgs)} kgs`);
+    lines.push("");
+  }
+  if (tamarindRecord) {
+    lines.push(`Tamarind: ${fmtNum(tamarindRecord.bags)} bags, ${fmtNum(tamarindRecord.kgs)} kgs`);
+    lines.push("");
+  }
+  lines.push(`Updated by: ${first.managerName}`);
+
+  const msg = lines.join("\n");
+  document.getElementById("summary-text").textContent = msg;
+  document.getElementById("wa-btn").onclick = () => {
+    window.open(`https://wa.me/?text=${encodeURIComponent(msg)}`, "_blank");
+  };
+  // "Add Another Update" from the combined flow should return to the same branch's full entry screen.
+  const addAnotherBtn = document.querySelector("#view-summary .btn-primary");
+  addAnotherBtn.onclick = () => openFullEntry();
+  go("view-summary");
 }
 
 function openProductSelect() {
@@ -561,20 +826,44 @@ function renderDashboard(records, container) {
       if (!latestByKey[key] || r.createdAt > latestByKey[key].createdAt) latestByKey[key] = r;
     });
     const items = Object.values(latestByKey);
-    const totalBags = items.reduce((s,r)=>s+Number(r.bags||0),0);
-    const totalKgs = items.reduce((s,r)=>s+Number(r.kgs||0),0);
-    const breakdownHtml = items.sort((a,b)=>a.productType.localeCompare(b.productType)).map(r => `
-      <div class="breakdown-row"><span>${lineLabel(r)}</span>
-      <span class="vals">${fmtNum(r.bags)} bags, ${fmtNum(r.kgs)} kgs</span></div>`).join("");
+
+    const onionItems = items.filter(r => r.productType === "onions")
+      .sort((a,b) => a.variety.localeCompare(b.variety));
+    const garlicItem = items.find(r => r.productType === "garlic");
+    const tamarindItem = items.find(r => r.productType === "tamarind");
+
+    const onionTotalBags = onionItems.reduce((s,r)=>s+Number(r.bags||0),0);
+
+    let sectionsHtml = "";
+    if (onionItems.length > 0) {
+      sectionsHtml += `
+        <div class="onions-total-line"><span>Onions Total Bags</span><span>${fmtNum(onionTotalBags)}</span></div>
+        <div class="breakdown-list">
+          ${onionItems.map(r => `
+            <div class="breakdown-row"><span>${lineLabel(r)}</span>
+            <span class="vals">${fmtNum(r.bags)} bags, ${fmtNum(r.kgs)} kgs</span></div>`).join("")}
+        </div>`;
+    }
+    if (garlicItem) {
+      sectionsHtml += `
+        <div class="breakdown-list" style="margin-top:12px;">
+          <div class="breakdown-row"><span>Garlic</span>
+          <span class="vals">${fmtNum(garlicItem.bags)} bags, ${fmtNum(garlicItem.kgs)} kgs</span></div>
+        </div>`;
+    }
+    if (tamarindItem) {
+      sectionsHtml += `
+        <div class="breakdown-list" style="margin-top:${garlicItem ? "0" : "12px"};">
+          <div class="breakdown-row"><span>Tamarind</span>
+          <span class="vals">${fmtNum(tamarindItem.bags)} bags, ${fmtNum(tamarindItem.kgs)} kgs</span></div>
+        </div>`;
+    }
+    if (!sectionsHtml) sectionsHtml = `<div class="empty-state" style="padding:10px 0;">No product data yet.</div>`;
 
     box.innerHTML = `
       <div class="head"><h3>KR Onions - ${branch.name}</h3></div>
       <div class="updated">Last updated: ${latest.dateLabel}, ${latest.timeLabel} · ${updateTypeLabel(latest.updateType)}</div>
-      <div class="totals-row">
-        <div class="stat"><div class="num">${fmtNum(totalBags)}</div><div class="lab">Total Bags</div></div>
-        <div class="stat"><div class="num">${fmtNum(totalKgs)}</div><div class="lab">Total Kgs</div></div>
-      </div>
-      <div class="breakdown-list">${breakdownHtml}</div>`;
+      ${sectionsHtml}`;
     container.appendChild(box);
   });
 }
