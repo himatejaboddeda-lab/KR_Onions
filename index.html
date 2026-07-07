@@ -263,7 +263,7 @@ const BRANCHES = [
 const OWNER_PIN = "9999";
 
 // Paste your Cloudflare Worker URL here (no trailing slash):
-const WORKER_URL = "https://kr-onions-worker.YOUR-SUBDOMAIN.workers.dev";
+const WORKER_URL = "https://kr-onions.boddedahimateja.workers.dev";
 
 // -----------------------------------------------------------------
 const PRODUCTS = [
@@ -504,7 +504,7 @@ function addAnother() {
 
 // ---- Owner dashboard ----------------------------------------------------
 function openDashboard() {
-  document.getElementById("today-label").textContent = "Today's Stock — " + prettyDate() + " (updates every few seconds)";
+  document.getElementById("today-label").textContent = "Current Stock (updates every few seconds — closing stock carries over until the next update)";
   go("view-dashboard");
   pollDashboard();
 }
@@ -518,7 +518,7 @@ function pollDashboard() {
   const tick = async () => {
     const container = document.getElementById("branch-summaries");
     try {
-      const rows = await fetchRecords(dateKeyFor());
+      const rows = await fetchCurrentStock();
       renderDashboard(rows, container);
     } catch (err) {
       console.error(err);
@@ -529,6 +529,12 @@ function pollDashboard() {
   dashboardTimer = setInterval(tick, 8000);
 }
 
+async function fetchCurrentStock() {
+  const res = await fetch(`${WORKER_URL}/api/current`);
+  if (!res.ok) throw new Error(`Fetch failed (${res.status})`);
+  return await res.json();
+}
+
 function renderDashboard(records, container) {
   container.innerHTML = "";
   if (records.length === 0) {
@@ -536,7 +542,8 @@ function renderDashboard(records, container) {
     return;
   }
   BRANCHES.forEach(branch => {
-    const branchRecords = records.filter(r => r.branchId === branch.id);
+    const branchRecords = records.filter(r => r.branchId === branch.id)
+      .sort((a,b) => (b.createdAt||"").localeCompare(a.createdAt||""));
     const box = document.createElement("div");
     box.className = "branch-summary";
 
@@ -592,9 +599,10 @@ function openHistory() {
     const results = document.getElementById("history-results");
     results.innerHTML = "Loading...";
     try {
-      const rows = await fetchRecords(dateInput.value, {
+      const rawRows = await fetchRecords(dateInput.value, {
         branch: branchSelect.value, product: productSelect.value, updateType: typeSelect.value
       });
+      const rows = dedupeLatestPerKey(rawRows);
       if (rows.length === 0) {
         results.innerHTML = `<div class="empty-state">No stock records found for this date / filter.</div>`;
         return;
@@ -616,6 +624,19 @@ function openHistory() {
   [dateInput, branchSelect, productSelect, typeSelect].forEach(el => { el.onchange = loadResults; });
   loadResults();
   go("view-history");
+}
+
+// ---- Keep only the latest save per branch+product+variety+updateType -------
+// Solves "manager saved the wrong number, then saved again to fix it" —
+// the corrected (latest) save is what shows in history; the earlier
+// mistaken one is superseded, not deleted, but no longer displayed.
+function dedupeLatestPerKey(rows) {
+  const latestByKey = {};
+  rows.forEach(r => {
+    const key = `${r.branchId}:${r.productType}:${r.variety}:${r.updateType}`;
+    if (!latestByKey[key] || r.createdAt > latestByKey[key].createdAt) latestByKey[key] = r;
+  });
+  return Object.values(latestByKey).sort((a,b) => (b.createdAt||"").localeCompare(a.createdAt||""));
 }
 
 // ---- Backend fetch helper --------------------------------------------------
