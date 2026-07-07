@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+<title>Owner Dashboard — KR Onions</title>
+<meta name="theme-color" content="#7A2E3D">
+<link rel="manifest" href="manifest.json">
+<link rel="apple-touch-icon" href="icons/icon-192.png">
+<link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+<div class="app-shell">
+
+  <div class="topbar">
+    <button class="back" onclick="Session=null;sessionStorage.removeItem('isOwner');window.location.href='index.html'">←</button>
+    <div class="titles">
+      <h1>Owner Dashboard</h1>
+      <div class="sub" id="today-label">Today's Stock — Live</div>
+    </div>
+  </div>
+
+  <button class="btn btn-ghost" style="margin-bottom:18px;" onclick="window.location.href='owner-history.html'">📖 View Stock History</button>
+
+  <div id="branch-summaries">Loading live stock...</div>
+</div>
+
+<script src="js/config.js"></script>
+<script src="js/app.js"></script>
+<script>
+  if (!requireOwnerSession()) {
+    document.body.innerHTML = "";
+    throw new Error("redirecting to login");
+  }
+
+  const todayKey = dateKeyFor();
+  document.getElementById("today-label").textContent = "Today's Stock — " + prettyDate() + " (updates every few seconds)";
+
+  const container = document.getElementById("branch-summaries");
+
+  function render(records) {
+    container.innerHTML = "";
+
+    if (records.length === 0) {
+      container.innerHTML = `<div class="empty-state">No stock updates yet today.<br>Ask branch managers to update stock.</div>`;
+      return;
+    }
+
+    BRANCHES.forEach(branch => {
+      const branchRecords = records.filter(r => r.branchId === branch.id);
+      const box = document.createElement("div");
+      box.className = "branch-summary";
+
+      if (branchRecords.length === 0) {
+        box.innerHTML = `
+          <div class="head"><h3>KR Onions - ${branch.name}</h3></div>
+          <div class="updated">No updates yet today</div>`;
+        container.appendChild(box);
+        return;
+      }
+
+      // Latest update time = most recent record for this branch
+      const latest = branchRecords[0]; // already sorted newest first
+
+      // Sum totals across ALL of today's records for this branch (both update types combined = current snapshot uses latest per product+variety)
+      // We show the latest value per product/variety key so the dashboard reflects current stock, not a sum of every save.
+      const latestByKey = {};
+      branchRecords.forEach(r => {
+        const key = r.productType + ":" + (r.variety || "none");
+        if (!latestByKey[key] || r.createdAt > latestByKey[key].createdAt) {
+          latestByKey[key] = r;
+        }
+      });
+      const items = Object.values(latestByKey);
+      const totalBags = items.reduce((s, r) => s + Number(r.bags || 0), 0);
+      const totalKgs = items.reduce((s, r) => s + Number(r.kgs || 0), 0);
+
+      const breakdownHtml = items
+        .sort((a, b) => a.productType.localeCompare(b.productType))
+        .map(r => `
+          <div class="breakdown-row">
+            <span class="name">${lineLabel(r)}</span>
+            <span class="vals">${fmtNum(r.bags)} bags, ${fmtNum(r.kgs)} kgs</span>
+          </div>`).join("");
+
+      box.innerHTML = `
+        <div class="head"><h3>KR Onions - ${branch.name}</h3></div>
+        <div class="updated">Last updated: ${latest.dateLabel}, ${latest.timeLabel} · ${updateTypeLabel(latest.updateType)}</div>
+        <div class="totals-row">
+          <div class="stat"><div class="num">${fmtNum(totalBags)}</div><div class="lab">Total Bags</div></div>
+          <div class="stat"><div class="num">${fmtNum(totalKgs)}</div><div class="lab">Total Kgs</div></div>
+        </div>
+        <div class="breakdown-list">${breakdownHtml}</div>`;
+      container.appendChild(box);
+    });
+  }
+
+  // Poll "today" every 8 seconds for a live-ish dashboard
+  pollTodayRecords(
+    rows => render(rows),
+    err => {
+      console.error(err);
+      container.innerHTML = `<div class="empty-state">Could not load stock.<br>Check your Worker URL / internet connection.</div>`;
+    }
+  );
+</script>
+</body>
+</html>

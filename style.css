@@ -1,0 +1,321 @@
+/* ============================================================
+   KR ONIONS STOCK UPDATE — STYLE SYSTEM
+   Palette: onion-skin maroon, cream market-sack background,
+   dried-turmeric gold accent, sprout green for "live/good" states.
+   ============================================================ */
+
+:root {
+  --ink:       #2E1B12;
+  --maroon:    #7A2E3D;
+  --maroon-dk: #5C2130;
+  --cream:     #FBF3E7;
+  --sack:      #F2E4CE;
+  --gold:      #C98A2B;
+  --gold-lt:   #E7C9A9;
+  --green:     #4C8C3A;
+  --red:       #B23A3A;
+  --radius:    18px;
+  --shadow:    0 6px 18px rgba(46, 27, 18, 0.12);
+  font-size: 16px;
+}
+
+* { box-sizing: border-box; }
+
+html, body {
+  margin: 0;
+  padding: 0;
+  background: var(--cream);
+  color: var(--ink);
+  font-family: "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+  -webkit-tap-highlight-color: transparent;
+}
+
+h1, h2, h3, .display {
+  font-family: "Poppins", "Inter", sans-serif;
+  font-weight: 700;
+  margin: 0 0 4px;
+}
+
+.app-shell {
+  max-width: 480px;
+  margin: 0 auto;
+  min-height: 100vh;
+  padding: 20px 18px 100px;
+  position: relative;
+}
+
+/* ---- Top bar --------------------------------------------------- */
+.topbar {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 22px;
+}
+
+.topbar .back {
+  width: 40px; height: 40px;
+  border-radius: 12px;
+  background: var(--sack);
+  border: none;
+  color: var(--maroon);
+  font-size: 20px;
+  display: flex; align-items: center; justify-content: center;
+  cursor: pointer;
+}
+
+.topbar .titles h1 { font-size: 1.25rem; color: var(--maroon-dk); }
+.topbar .titles .sub { font-size: 0.82rem; color: #8a6a53; }
+
+.brand-ring {
+  width: 34px; height: 34px; border-radius: 50%;
+  background:
+    radial-gradient(circle at center, var(--maroon) 0 22%, transparent 23% 34%,
+    var(--gold) 35% 46%, transparent 47% 58%, var(--gold-lt) 59% 70%, transparent 71%);
+  flex-shrink: 0;
+}
+
+/* ---- Hero header (home) ----------------------------------------- */
+.hero {
+  text-align: center;
+  margin-bottom: 26px;
+}
+.hero .brand-ring { width: 64px; height: 64px; margin: 0 auto 10px; }
+.hero h1 { font-size: 1.6rem; color: var(--maroon-dk); }
+.hero p { color: #8a6a53; margin: 4px 0 0; font-size: 0.92rem; }
+
+/* ---- Card grid --------------------------------------------------- */
+.card-grid {
+  display: grid;
+  gap: 14px;
+}
+
+.tap-card {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  background: #fff;
+  border: 2px solid var(--sack);
+  border-radius: var(--radius);
+  padding: 18px;
+  box-shadow: var(--shadow);
+  cursor: pointer;
+  text-align: left;
+  width: 100%;
+  font: inherit;
+  color: inherit;
+  transition: transform .12s ease, border-color .12s ease;
+}
+.tap-card:active { transform: scale(0.97); }
+.tap-card:hover { border-color: var(--gold); }
+
+.tap-card .icon {
+  width: 52px; height: 52px;
+  border-radius: 14px;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 26px;
+  flex-shrink: 0;
+  color: #fff;
+}
+.icon-onion   { background: var(--maroon); }
+.icon-garlic  { background: var(--gold); }
+.icon-tamarind{ background: #6B4A2C; }
+.icon-branch  { background: var(--green); }
+
+.tap-card .label { font-weight: 700; font-size: 1.05rem; color: var(--ink); }
+.tap-card .meta  { font-size: 0.82rem; color: #8a6a53; margin-top: 2px; }
+.tap-card .chev  { margin-left: auto; color: #C9B79E; font-size: 1.3rem; }
+
+/* role cards, bigger */
+.role-card { padding: 26px 18px; }
+.role-card .label { font-size: 1.2rem; }
+
+/* ---- Forms -------------------------------------------------------- */
+.field { margin-bottom: 16px; }
+.field label {
+  display: block; font-weight: 600; margin-bottom: 6px; font-size: 0.92rem;
+  color: var(--maroon-dk);
+}
+.field input[type="text"],
+.field input[type="number"],
+.field input[type="password"],
+.field input[type="date"],
+.field select,
+.field textarea {
+  width: 100%;
+  padding: 14px;
+  border-radius: 12px;
+  border: 2px solid var(--sack);
+  background: #fff;
+  font-size: 1rem;
+  color: var(--ink);
+  font-family: inherit;
+}
+.field input:focus, .field select:focus, .field textarea:focus {
+  outline: none; border-color: var(--gold);
+}
+.field textarea { resize: vertical; min-height: 70px; }
+
+.pill-row {
+  display: flex; gap: 10px; flex-wrap: wrap;
+}
+.pill {
+  flex: 1;
+  min-width: 120px;
+  text-align: center;
+  padding: 12px 10px;
+  border-radius: 12px;
+  border: 2px solid var(--sack);
+  background: #fff;
+  font-weight: 600;
+  cursor: pointer;
+  color: var(--ink);
+}
+.pill.selected {
+  border-color: var(--maroon);
+  background: var(--maroon);
+  color: #fff;
+}
+
+/* ---- Buttons -------------------------------------------------------- */
+.btn {
+  display: block;
+  width: 100%;
+  padding: 16px;
+  border-radius: 14px;
+  border: none;
+  font-size: 1.05rem;
+  font-weight: 700;
+  font-family: inherit;
+  cursor: pointer;
+  text-align: center;
+  text-decoration: none;
+}
+.btn-primary { background: var(--maroon); color: #fff; }
+.btn-primary:active { background: var(--maroon-dk); }
+.btn-whatsapp { background: #25D366; color: #fff; }
+.btn-ghost { background: var(--sack); color: var(--maroon-dk); }
+.btn[disabled] { opacity: 0.55; cursor: not-allowed; }
+.btn + .btn { margin-top: 12px; }
+
+/* ---- Banner / toast --------------------------------------------------- */
+.kr-banner {
+  position: fixed;
+  left: 50%; bottom: 24px;
+  transform: translate(-50%, 20px);
+  max-width: 90%;
+  padding: 13px 20px;
+  border-radius: 12px;
+  font-weight: 600;
+  color: #fff;
+  background: var(--ink);
+  opacity: 0;
+  pointer-events: none;
+  transition: all .25s ease;
+  z-index: 200;
+  text-align: center;
+}
+.kr-banner.show { opacity: 1; transform: translate(-50%, 0); }
+.kr-banner-success { background: var(--green); }
+.kr-banner-error { background: var(--red); }
+
+/* ---- Dashboard cards ---------------------------------------------------- */
+.branch-summary {
+  background: #fff;
+  border-radius: var(--radius);
+  border: 2px solid var(--sack);
+  box-shadow: var(--shadow);
+  padding: 18px;
+  margin-bottom: 16px;
+}
+.branch-summary .head {
+  display: flex; justify-content: space-between; align-items: baseline;
+  margin-bottom: 6px;
+}
+.branch-summary .head h3 { color: var(--maroon-dk); font-size: 1.1rem; }
+.branch-summary .updated { font-size: 0.78rem; color: #8a6a53; margin-bottom: 12px; }
+
+.totals-row { display: flex; gap: 10px; margin-bottom: 12px; }
+.totals-row .stat {
+  flex: 1;
+  background: var(--sack);
+  border-radius: 12px;
+  padding: 10px 12px;
+  text-align: center;
+}
+.totals-row .stat .num { font-size: 1.15rem; font-weight: 800; color: var(--maroon-dk); }
+.totals-row .stat .lab { font-size: 0.72rem; color: #8a6a53; }
+
+.breakdown-list { border-top: 1px dashed var(--sack); padding-top: 10px; }
+.breakdown-row {
+  display: flex; justify-content: space-between;
+  padding: 6px 0; font-size: 0.9rem;
+}
+.breakdown-row .name { color: var(--ink); }
+.breakdown-row .vals { color: #8a6a53; }
+
+.empty-state {
+  text-align: center;
+  padding: 40px 20px;
+  color: #8a6a53;
+}
+
+/* ---- Filters (history page) --------------------------------------------- */
+.filter-bar {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 10px;
+  margin-bottom: 18px;
+}
+.filter-bar .field { margin-bottom: 0; grid-column: span 1; }
+.filter-bar .field.full { grid-column: span 2; }
+
+/* ---- Record row (history list) ------------------------------------------ */
+.record-row {
+  background: #fff;
+  border: 2px solid var(--sack);
+  border-radius: 14px;
+  padding: 14px;
+  margin-bottom: 10px;
+}
+.record-row .top {
+  display: flex; justify-content: space-between; font-weight: 700; color: var(--maroon-dk);
+}
+.record-row .sub { font-size: 0.8rem; color: #8a6a53; margin: 3px 0 8px; }
+.record-row .nums { display: flex; gap: 16px; font-size: 0.92rem; }
+.record-row .tag {
+  display: inline-block;
+  font-size: 0.7rem;
+  font-weight: 700;
+  padding: 3px 8px;
+  border-radius: 8px;
+  background: var(--gold-lt);
+  color: var(--maroon-dk);
+  margin-top: 6px;
+}
+
+/* ---- Summary page --------------------------------------------------- */
+.summary-box {
+  background: #fff;
+  border: 2px solid var(--sack);
+  border-radius: var(--radius);
+  padding: 20px;
+  box-shadow: var(--shadow);
+  margin-bottom: 20px;
+  white-space: pre-wrap;
+  font-size: 0.94rem;
+  line-height: 1.5;
+}
+
+.checkmark {
+  width: 64px; height: 64px;
+  border-radius: 50%;
+  background: var(--green);
+  color: #fff;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 32px;
+  margin: 0 auto 14px;
+}
+
+.center { text-align: center; }
+.mt-24 { margin-top: 24px; }
+.small-note { font-size: 0.8rem; color: #8a6a53; text-align: center; margin-top: 10px; }

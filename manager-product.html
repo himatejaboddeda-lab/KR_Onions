@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+<title>Select Product — KR Onions</title>
+<meta name="theme-color" content="#7A2E3D">
+<link rel="manifest" href="manifest.json">
+<link rel="apple-touch-icon" href="icons/icon-192.png">
+<link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+<div class="app-shell">
+
+  <div class="topbar">
+    <button class="back" onclick="window.location.href='manager-branch.html'">←</button>
+    <div class="titles">
+      <h1 id="branch-title">Branch</h1>
+      <div class="sub">Select product to update</div>
+    </div>
+  </div>
+
+  <div class="card-grid" id="product-list"></div>
+</div>
+
+<script src="js/config.js"></script>
+<script src="js/app.js"></script>
+<script>
+  const branchId = requireManagerSession();
+  if (branchId) {
+    document.getElementById("branch-title").textContent = "KR Onions - " + Session.get("branchName");
+  }
+
+  const icons = { onions: ["🧅","icon-onion"], garlic: ["🧄","icon-garlic"], tamarind: ["🍂","icon-tamarind"] };
+  const list = document.getElementById("product-list");
+
+  PRODUCTS.forEach(p => {
+    const [emoji, iconClass] = icons[p.id];
+    const card = document.createElement("button");
+    card.className = "tap-card";
+    card.innerHTML = `
+      <div class="icon ${iconClass}">${emoji}</div>
+      <div>
+        <div class="label">${p.name}</div>
+        <div class="meta">${p.hasVariety ? "Small / Medium / Large" : "Update bags & kgs"}</div>
+      </div>
+      <div class="chev">›</div>`;
+    card.addEventListener("click", () => {
+      Session.set("product", p.id);
+      Session.set("productName", p.name);
+      if (p.hasVariety) {
+        window.location.href = "manager-variety.html";
+      } else {
+        sessionStorage.removeItem("variety");
+        sessionStorage.removeItem("varietyName");
+        window.location.href = "manager-entry.html";
+      }
+    });
+    list.appendChild(card);
+  });
+</script>
+</body>
+</html>

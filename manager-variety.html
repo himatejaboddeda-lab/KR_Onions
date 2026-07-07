@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+<title>Onion Variety — KR Onions</title>
+<meta name="theme-color" content="#7A2E3D">
+<link rel="manifest" href="manifest.json">
+<link rel="apple-touch-icon" href="icons/icon-192.png">
+<link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+<div class="app-shell">
+
+  <div class="topbar">
+    <button class="back" onclick="window.location.href='manager-product.html'">←</button>
+    <div class="titles">
+      <h1>Onions</h1>
+      <div class="sub">Select variety</div>
+    </div>
+  </div>
+
+  <div class="card-grid" id="variety-list"></div>
+</div>
+
+<script src="js/config.js"></script>
+<script src="js/app.js"></script>
+<script>
+  requireManagerSession();
+  const list = document.getElementById("variety-list");
+
+  ONION_VARIETIES.forEach(v => {
+    const card = document.createElement("button");
+    card.className = "tap-card";
+    card.innerHTML = `
+      <div class="icon icon-onion">🧅</div>
+      <div>
+        <div class="label">${v.name}</div>
+        <div class="meta">Update bags &amp; kgs</div>
+      </div>
+      <div class="chev">›</div>`;
+    card.addEventListener("click", () => {
+      Session.set("variety", v.id);
+      Session.set("varietyName", v.name);
+      window.location.href = "manager-entry.html";
+    });
+    list.appendChild(card);
+  });
+</script>
+</body>
+</html>

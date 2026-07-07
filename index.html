@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+<title>KR Onions Stock Update</title>
+<meta name="theme-color" content="#7A2E3D">
+<link rel="manifest" href="manifest.json">
+<link rel="apple-touch-icon" href="icons/icon-192.png">
+<link rel="icon" href="icons/icon-192.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@700;800&family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+<div class="app-shell">
+
+  <div class="hero">
+    <div class="brand-ring"></div>
+    <h1>KR Onions</h1>
+    <p>Stock Update &amp; Live Tracking</p>
+  </div>
+
+  <div class="card-grid">
+    <button class="tap-card role-card" id="btn-owner">
+      <div class="icon icon-onion">👑</div>
+      <div>
+        <div class="label">I'm the Owner</div>
+        <div class="meta">View live stock from all branches</div>
+      </div>
+      <div class="chev">›</div>
+    </button>
+
+    <button class="tap-card role-card" id="btn-manager">
+      <div class="icon icon-branch">🧑‍💼</div>
+      <div>
+        <div class="label">I'm a Branch Manager</div>
+        <div class="meta">Update today's stock</div>
+      </div>
+      <div class="chev">›</div>
+    </button>
+  </div>
+
+  <!-- Owner PIN modal (simple inline panel) -->
+  <div id="owner-pin-box" style="display:none; margin-top:20px;">
+    <div class="field">
+      <label for="owner-pin">Enter Owner PIN</label>
+      <input type="password" id="owner-pin" inputmode="numeric" maxlength="6" placeholder="••••">
+    </div>
+    <button class="btn btn-primary" id="owner-continue">Continue</button>
+  </div>
+
+  <p class="small-note">KR Onions Stock Update &middot; v1.0</p>
+</div>
+
+<script src="js/config.js"></script>
+<script src="js/app.js"></script>
+<script>
+  document.getElementById("btn-manager").addEventListener("click", () => {
+    Session.clearManagerFlow();
+    sessionStorage.removeItem("isOwner");
+    window.location.href = "manager-branch.html";
+  });
+
+  document.getElementById("btn-owner").addEventListener("click", () => {
+    document.getElementById("owner-pin-box").style.display = "block";
+    document.getElementById("owner-pin").focus();
+  });
+
+  document.getElementById("owner-continue").addEventListener("click", () => {
+    const pin = document.getElementById("owner-pin").value.trim();
+    if (pin === OWNER_PIN) {
+      Session.set("isOwner", true);
+      window.location.href = "owner-dashboard.html";
+    } else {
+      showBanner("Incorrect PIN. Try again.", "error");
+    }
+  });
+</script>
+</body>
+</html>

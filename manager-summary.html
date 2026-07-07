@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+<title>Update Saved — KR Onions</title>
+<meta name="theme-color" content="#7A2E3D">
+<link rel="manifest" href="manifest.json">
+<link rel="apple-touch-icon" href="icons/icon-192.png">
+<link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+<div class="app-shell">
+
+  <div class="center" style="margin-top:20px;">
+    <div class="checkmark">✓</div>
+    <h1>Update Saved</h1>
+    <p class="small-note" style="margin-bottom:20px;">Here's what was recorded</p>
+  </div>
+
+  <div class="summary-box" id="summary-text">Loading...</div>
+
+  <button class="btn btn-whatsapp" id="wa-btn">Share to WhatsApp</button>
+  <button class="btn btn-primary" id="another-btn">Add Another Update</button>
+  <button class="btn btn-ghost" id="home-btn">Back to Home</button>
+</div>
+
+<script src="js/config.js"></script>
+<script src="js/app.js"></script>
+<script>
+  const record = Session.get("lastRecord");
+  if (!record) window.location.href = "index.html";
+
+  const msg = buildWhatsAppMessage({
+    branchName: record.branchName,
+    dateLabel: record.dateLabel,
+    timeLabel: record.timeLabel,
+    updateTypeName: updateTypeLabel(record.updateType),
+    records: [record],
+    managerName: record.managerName
+  });
+
+  document.getElementById("summary-text").textContent = msg;
+
+  document.getElementById("wa-btn").addEventListener("click", () => {
+    window.open(whatsappShareUrl(msg), "_blank");
+  });
+
+  document.getElementById("another-btn").addEventListener("click", () => {
+    sessionStorage.removeItem("product");
+    sessionStorage.removeItem("productName");
+    sessionStorage.removeItem("variety");
+    sessionStorage.removeItem("varietyName");
+    window.location.href = "manager-product.html";
+  });
+
+  document.getElementById("home-btn").addEventListener("click", () => {
+    Session.clearManagerFlow();
+    window.location.href = "index.html";
+  });
+</script>
+</body>
+</html>

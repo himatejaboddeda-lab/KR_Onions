@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+<title>Select Branch — KR Onions</title>
+<meta name="theme-color" content="#7A2E3D">
+<link rel="manifest" href="manifest.json">
+<link rel="apple-touch-icon" href="icons/icon-192.png">
+<link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+<div class="app-shell">
+
+  <div class="topbar">
+    <button class="back" onclick="window.location.href='index.html'">←</button>
+    <div class="titles">
+      <h1>Select Your Branch</h1>
+      <div class="sub">Managers only</div>
+    </div>
+  </div>
+
+  <div class="card-grid" id="branch-list"></div>
+
+  <div id="pin-panel" style="display:none; margin-top:22px;">
+    <h3 id="pin-branch-name" style="color:var(--maroon-dk);"></h3>
+    <div class="field">
+      <label for="manager-name">Your Name</label>
+      <input type="text" id="manager-name" placeholder="e.g. Ravi Kumar">
+    </div>
+    <div class="field">
+      <label for="branch-pin">Branch PIN</label>
+      <input type="password" id="branch-pin" inputmode="numeric" maxlength="6" placeholder="••••">
+    </div>
+    <button class="btn btn-primary" id="pin-continue">Continue</button>
+  </div>
+
+</div>
+
+<script src="js/config.js"></script>
+<script src="js/app.js"></script>
+<script>
+  let selectedBranch = null;
+  const list = document.getElementById("branch-list");
+
+  BRANCHES.forEach(b => {
+    const card = document.createElement("button");
+    card.className = "tap-card";
+    card.innerHTML = `
+      <div class="icon icon-branch">🏬</div>
+      <div>
+        <div class="label">KR Onions - ${b.name}</div>
+        <div class="meta">Tap to update today's stock</div>
+      </div>
+      <div class="chev">›</div>`;
+    card.addEventListener("click", () => {
+      selectedBranch = b;
+      document.getElementById("pin-branch-name").textContent = `KR Onions - ${b.name}`;
+      document.getElementById("pin-panel").style.display = "block";
+      document.getElementById("manager-name").focus();
+    });
+    list.appendChild(card);
+  });
+
+  document.getElementById("pin-continue").addEventListener("click", () => {
+    const name = document.getElementById("manager-name").value.trim();
+    const pin = document.getElementById("branch-pin").value.trim();
+    if (!name) { showBanner("Please enter your name.", "error"); return; }
+    if (!selectedBranch || pin !== selectedBranch.pin) {
+      showBanner("Incorrect branch PIN.", "error");
+      return;
+    }
+    Session.set("branchId", selectedBranch.id);
+    Session.set("branchName", selectedBranch.name);
+    Session.set("managerName", name);
+    window.location.href = "manager-product.html";
+  });
+</script>
+</body>
+</html>

@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+<title>Stock History — KR Onions</title>
+<meta name="theme-color" content="#7A2E3D">
+<link rel="manifest" href="manifest.json">
+<link rel="apple-touch-icon" href="icons/icon-192.png">
+<link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+<div class="app-shell">
+
+  <div class="topbar">
+    <button class="back" onclick="window.location.href='owner-dashboard.html'">←</button>
+    <div class="titles">
+      <h1>Stock History</h1>
+      <div class="sub">Digital stock book</div>
+    </div>
+  </div>
+
+  <div class="filter-bar">
+    <div class="field full">
+      <label for="f-date">Date</label>
+      <input type="date" id="f-date">
+    </div>
+    <div class="field">
+      <label for="f-branch">Branch</label>
+      <select id="f-branch">
+        <option value="">All Branches</option>
+      </select>
+    </div>
+    <div class="field">
+      <label for="f-product">Product</label>
+      <select id="f-product">
+        <option value="">All Products</option>
+      </select>
+    </div>
+    <div class="field full">
+      <label for="f-updatetype">Update Type</label>
+      <select id="f-updatetype">
+        <option value="">Both (Before Lunch & Closing)</option>
+      </select>
+    </div>
+  </div>
+
+  <div id="results">Loading...</div>
+</div>
+
+<script src="js/config.js"></script>
+<script src="js/app.js"></script>
+<script>
+  if (!requireOwnerSession()) {
+    document.body.innerHTML = "";
+    throw new Error("redirecting to login");
+  }
+
+  const dateInput = document.getElementById("f-date");
+  const branchSelect = document.getElementById("f-branch");
+  const productSelect = document.getElementById("f-product");
+  const typeSelect = document.getElementById("f-updatetype");
+  const results = document.getElementById("results");
+
+  dateInput.value = dateKeyFor();
+
+  BRANCHES.forEach(b => {
+    const opt = document.createElement("option");
+    opt.value = b.id; opt.textContent = b.name;
+    branchSelect.appendChild(opt);
+  });
+  PRODUCTS.forEach(p => {
+    const opt = document.createElement("option");
+    opt.value = p.id; opt.textContent = p.name;
+    productSelect.appendChild(opt);
+  });
+  UPDATE_TYPES.forEach(u => {
+    const opt = document.createElement("option");
+    opt.value = u.id; opt.textContent = u.name;
+    typeSelect.appendChild(opt);
+  });
+
+  async function loadResults() {
+    results.innerHTML = "Loading...";
+    try {
+      const rows = await fetchRecordsByDate(dateInput.value, {
+        branchId: branchSelect.value || undefined,
+        productType: productSelect.value || undefined,
+        updateType: typeSelect.value || undefined
+      });
+      renderResults(rows);
+    } catch (err) {
+      console.error(err);
+      results.innerHTML = `<div class="empty-state">Could not load history.<br>Check your Worker URL / internet connection.</div>`;
+    }
+  }
+
+  function renderResults(rows) {
+    if (rows.length === 0) {
+      results.innerHTML = `<div class="empty-state">No stock records found for this date / filter.</div>`;
+      return;
+    }
+    results.innerHTML = rows.map(r => `
+      <div class="record-row">
+        <div class="top">
+          <span>KR Onions - ${r.branchName}</span>
+          <span>${r.timeLabel}</span>
+        </div>
+        <div class="sub">${lineLabel(r)} · Updated by ${r.managerName}</div>
+        <div class="nums">
+          <span><strong>${fmtNum(r.bags)}</strong> bags</span>
+          <span><strong>${fmtNum(r.kgs)}</strong> kgs</span>
+        </div>
+        ${r.notes ? `<div class="sub" style="margin-top:6px;">📝 ${r.notes}</div>` : ""}
+        <div class="tag">${updateTypeLabel(r.updateType)}</div>
+      </div>
+    `).join("");
+  }
+
+  [dateInput, branchSelect, productSelect, typeSelect].forEach(el => {
+    el.addEventListener("change", loadResults);
+  });
+
+  loadResults();
+</script>
+</body>
+</html>

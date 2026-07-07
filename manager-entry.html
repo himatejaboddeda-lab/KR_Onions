@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+<title>Stock Entry — KR Onions</title>
+<meta name="theme-color" content="#7A2E3D">
+<link rel="manifest" href="manifest.json">
+<link rel="apple-touch-icon" href="icons/icon-192.png">
+<link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+<div class="app-shell">
+
+  <div class="topbar">
+    <button class="back" id="back-btn">←</button>
+    <div class="titles">
+      <h1 id="entry-title">Stock Entry</h1>
+      <div class="sub" id="entry-sub">Branch</div>
+    </div>
+  </div>
+
+  <div class="field">
+    <label>Update Type</label>
+    <div class="pill-row" id="update-type-row"></div>
+  </div>
+
+  <div class="field">
+    <label for="bags">Bags in Stock</label>
+    <input type="number" id="bags" min="0" step="1" inputmode="numeric" placeholder="e.g. 100">
+  </div>
+
+  <div class="field">
+    <label for="kgs">Kgs in Stock</label>
+    <input type="number" id="kgs" min="0" step="0.1" inputmode="decimal" placeholder="e.g. 5000">
+  </div>
+
+  <div class="field">
+    <label for="notes">Notes (optional)</label>
+    <textarea id="notes" placeholder="Any remarks..."></textarea>
+  </div>
+
+  <button class="btn btn-primary" id="save-btn">Save Update</button>
+</div>
+
+<script src="js/config.js"></script>
+<script src="js/app.js"></script>
+<script>
+  const branchId = requireManagerSession();
+  const product = Session.get("product");
+  const productName = Session.get("productName");
+  const variety = Session.get("variety");
+  const varietyName = Session.get("varietyName");
+
+  if (!product) window.location.href = "manager-product.html";
+
+  document.getElementById("entry-title").textContent = varietyName || productName;
+  document.getElementById("entry-sub").textContent = "KR Onions - " + Session.get("branchName");
+
+  document.getElementById("back-btn").addEventListener("click", () => {
+    window.location.href = variety ? "manager-variety.html" : "manager-product.html";
+  });
+
+  // Update type pills
+  let selectedType = null;
+  const row = document.getElementById("update-type-row");
+  UPDATE_TYPES.forEach(u => {
+    const pill = document.createElement("div");
+    pill.className = "pill";
+    pill.textContent = u.name;
+    pill.addEventListener("click", () => {
+      [...row.children].forEach(c => c.classList.remove("selected"));
+      pill.classList.add("selected");
+      selectedType = u.id;
+    });
+    row.appendChild(pill);
+  });
+
+  const saveBtn = document.getElementById("save-btn");
+  saveBtn.addEventListener("click", async () => {
+    const bags = document.getElementById("bags").value;
+    const kgs = document.getElementById("kgs").value;
+    const notes = document.getElementById("notes").value.trim();
+
+    if (!selectedType) { showBanner("Please select an update type.", "error"); return; }
+    if (bags === "" || kgs === "") { showBanner("Bags and Kgs cannot be empty.", "error"); return; }
+    if (isNaN(bags) || isNaN(kgs)) { showBanner("Bags and Kgs must be numbers.", "error"); return; }
+    if (Number(bags) < 0 || Number(kgs) < 0) { showBanner("Bags and Kgs cannot be negative.", "error"); return; }
+
+    saveBtn.disabled = true;
+    saveBtn.textContent = "Saving...";
+
+    try {
+      const record = await saveStockRecord({
+        branchId,
+        branchName: Session.get("branchName"),
+        productType: product,
+        variety: variety || "none",
+        bags: Number(bags),
+        kgs: Number(kgs),
+        updateType: selectedType,
+        managerName: Session.get("managerName"),
+        notes
+      });
+      Session.set("lastRecord", record);
+      showBanner("Stock update saved!", "success");
+      setTimeout(() => { window.location.href = "manager-summary.html"; }, 500);
+    } catch (err) {
+      console.error(err);
+      showBanner("Could not save. Check connection and try again.", "error");
+      saveBtn.disabled = false;
+      saveBtn.textContent = "Save Update";
+    }
+  });
+</script>
+</body>
+</html>
