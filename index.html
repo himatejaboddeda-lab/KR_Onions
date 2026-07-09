@@ -31,9 +31,10 @@ h1,h2,h3{font-family:"Poppins","Inter",sans-serif;font-weight:700;margin:0 0 4px
 .topbar .titles .sub{font-size:.82rem;color:#8a6a53;}
 
 .hero{text-align:center;margin-bottom:26px;}
-.brand-ring{width:64px;height:64px;border-radius:50%;margin:0 auto 10px;
-  background:radial-gradient(circle at center,var(--maroon) 0 22%,transparent 23% 34%,
-  var(--gold) 35% 46%,transparent 47% 58%,var(--gold-lt) 59% 70%,transparent 71%);}
+.hero-onion{width:110px;height:110px;margin:0 auto 6px;display:block;animation:onion-bounce 2.4s ease-in-out infinite;}
+.onion-sprout{transform-origin:60px 40px;animation:onion-sway 2.4s ease-in-out infinite;}
+@keyframes onion-bounce{0%,100%{transform:translateY(0) scaleY(1);}45%{transform:translateY(-8px) scaleY(1.03);}55%{transform:translateY(-8px) scaleY(1.03);}75%{transform:translateY(0) scaleY(.98);}}
+@keyframes onion-sway{0%,100%{transform:rotate(-4deg);}50%{transform:rotate(4deg);}}
 .hero h1{font-size:1.6rem;color:var(--maroon-dk);}
 .hero p{color:#8a6a53;margin:4px 0 0;font-size:.92rem;}
 
@@ -176,7 +177,34 @@ h1,h2,h3{font-family:"Poppins","Inter",sans-serif;font-weight:700;margin:0 0 4px
   <!-- ============ VIEW: HOME / ROLE SELECT ============ -->
   <section id="view-home" class="view active">
     <div class="hero">
-      <div class="brand-ring"></div>
+      <svg class="hero-onion" viewBox="0 0 120 120" xmlns="http://www.w3.org/2000/svg">
+        <g class="onion-sprout">
+          <path d="M60 40 C 55 25, 58 12, 50 4" fill="none" stroke="#4C8C3A" stroke-width="4" stroke-linecap="round"/>
+          <path d="M60 40 C 65 22, 62 10, 70 2" fill="none" stroke="#5DA84A" stroke-width="4" stroke-linecap="round"/>
+          <path d="M60 40 C 60 20, 60 8, 60 0" fill="none" stroke="#6FBF5A" stroke-width="4" stroke-linecap="round"/>
+        </g>
+        <g class="onion-body">
+          <ellipse cx="60" cy="76" rx="38" ry="40" fill="#8C3B52"/>
+          <ellipse cx="60" cy="76" rx="38" ry="40" fill="url(#onionShade)"/>
+          <path d="M32 50 C 45 40, 75 40, 88 50" fill="none" stroke="#B25D75" stroke-width="2.5" opacity=".7"/>
+          <path d="M27 66 C 42 54, 78 54, 93 66" fill="none" stroke="#B25D75" stroke-width="2.5" opacity=".6"/>
+          <path d="M26 84 C 42 96, 78 96, 94 84" fill="none" stroke="#6E2C40" stroke-width="2.5" opacity=".5"/>
+          <ellipse cx="47" cy="66" rx="7" ry="9" fill="#fff" opacity=".9"/>
+          <circle cx="47" cy="66" r="3.4" fill="#2E1B12"/>
+          <ellipse cx="73" cy="66" rx="7" ry="9" fill="#fff" opacity=".9"/>
+          <circle cx="73" cy="66" r="3.4" fill="#2E1B12"/>
+          <path d="M50 86 Q60 94 70 86" fill="none" stroke="#2E1B12" stroke-width="3" stroke-linecap="round"/>
+          <ellipse cx="42" cy="76" rx="4" ry="2.5" fill="#E7A9B8" opacity=".7"/>
+          <ellipse cx="78" cy="76" rx="4" ry="2.5" fill="#E7A9B8" opacity=".7"/>
+        </g>
+        <path d="M48 114 Q60 122 72 114" fill="none" stroke="#C98A2B" stroke-width="3" stroke-linecap="round" opacity=".8"/>
+        <defs>
+          <radialGradient id="onionShade" cx="38%" cy="32%" r="75%">
+            <stop offset="0%" stop-color="#B25D75"/>
+            <stop offset="55%" stop-color="#8C3B52" stop-opacity="0"/>
+          </radialGradient>
+        </defs>
+      </svg>
       <h1>KR Onions</h1>
       <p>Stock Update &amp; Live Tracking</p>
     </div>
