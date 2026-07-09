@@ -1375,7 +1375,11 @@ function openOwnerSettings() {
     } else {
       document.getElementById("price-current-note").textContent = "No price set yet today.";
     }
-  }).catch(() => {});
+  }).catch(err => {
+    console.error(err);
+    document.getElementById("price-current-note").textContent =
+      "Could not load current price — check your Worker URL / that the Worker is deployed with the latest code.";
+  });
 }
 
 async function savePricing() {
@@ -1384,15 +1388,17 @@ async function savePricing() {
   if (pricePerKg === "" || minPricePerKg === "") { showBanner("Enter both price fields.", "error"); return; }
   if (isNaN(pricePerKg) || isNaN(minPricePerKg)) { showBanner("Prices must be numbers.", "error"); return; }
   try {
-    await fetch(`${WORKER_URL}/api/price`, {
+    const res = await fetch(`${WORKER_URL}/api/price`, {
       method: "POST", headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ pricePerKg: Number(pricePerKg), minPricePerKg: Number(minPricePerKg), setBy: "Owner" })
     });
+    const data = await res.json().catch(() => ({}));
+    if (!res.ok) throw new Error(data.error || `Save failed (${res.status})`);
     showBanner("Price updated for today.", "success");
     go("view-dashboard");
   } catch (err) {
     console.error(err);
-    showBanner("Could not save price. Check connection.", "error");
+    showBanner(`Could not save price: ${err.message}`, "error");
   }
 }
 
