@@ -135,14 +135,39 @@ h1,h2,h3{font-family:"Poppins","Inter",sans-serif;font-weight:700;margin:0 0 4px
 
 .entry-mini-field{margin-bottom:10px;}
 .entry-mini-field label{display:block;font-size:.8rem;font-weight:600;color:#8a6a53;margin-bottom:5px;}
-.entry-mini-field input,.entry-mini-field textarea{
+.entry-mini-field input,.entry-mini-field textarea,.entry-mini-field select{
   width:100%;padding:12px;border-radius:10px;border:2px solid var(--sack);background:var(--cream);
   font-size:.95rem;color:var(--ink);font-family:inherit;}
 .entry-mini-field textarea{min-height:50px;resize:vertical;}
-.entry-mini-field input:focus,.entry-mini-field textarea:focus{outline:none;border-color:var(--gold);}
+.entry-mini-field input:focus,.entry-mini-field textarea:focus,.entry-mini-field select:focus{outline:none;border-color:var(--gold);}
 
 .onions-total-line{display:flex;justify-content:space-between;padding:10px 12px;background:var(--sack);
   border-radius:10px;margin-bottom:12px;font-weight:700;color:var(--maroon-dk);font-size:.9rem;}
+
+/* ---- Price banner ---- */
+.price-banner{background:var(--maroon);color:#fff;border-radius:14px;padding:14px 16px;margin-bottom:18px;
+  display:flex;justify-content:space-between;gap:10px;font-size:.88rem;}
+.price-banner .p-block{text-align:center;flex:1;}
+.price-banner .p-num{font-size:1.15rem;font-weight:800;}
+.price-banner .p-lab{font-size:.7rem;opacity:.85;}
+
+/* ---- Batch breakdown (dashboard) ---- */
+.batch-row{display:flex;justify-content:space-between;padding:7px 0;font-size:.85rem;
+  border-bottom:1px dashed var(--sack);}
+.batch-row:last-child{border-bottom:none;}
+.batch-row .who{color:var(--ink);}
+.batch-row .bid{font-size:.72rem;color:#8a6a53;}
+.batch-row .rem{color:var(--maroon-dk);font-weight:700;}
+.variety-group-title{font-weight:700;color:var(--maroon-dk);font-size:.88rem;margin:12px 0 4px;}
+
+/* ---- Chatbot ---- */
+.chat-log{display:flex;flex-direction:column;gap:10px;margin-bottom:16px;min-height:120px;}
+.chat-bubble{max-width:88%;padding:12px 14px;border-radius:14px;font-size:.9rem;line-height:1.5;white-space:pre-wrap;}
+.chat-bubble.user{align-self:flex-end;background:var(--maroon);color:#fff;border-bottom-right-radius:4px;}
+.chat-bubble.bot{align-self:flex-start;background:#fff;border:2px solid var(--sack);color:var(--ink);border-bottom-left-radius:4px;}
+.chat-input-row{display:flex;gap:8px;}
+.chat-input-row input{flex:1;padding:14px;border-radius:12px;border:2px solid var(--sack);font-size:.95rem;font-family:inherit;}
+.chat-input-row input:focus{outline:none;border-color:var(--gold);}
 </style>
 </head>
 <body>
@@ -203,7 +228,139 @@ h1,h2,h3{font-family:"Poppins","Inter",sans-serif;font-weight:700;margin:0 0 4px
     </div>
   </section>
 
+  <!-- ============ VIEW: MANAGER HOME (Sales Today / Stock Arrival) ============ -->
+  <section id="view-manager-home" class="view">
+    <div class="topbar">
+      <button class="back" onclick="go('view-branch')">←</button>
+      <div class="titles"><h1 id="mh-branch-title">Branch</h1><div class="sub">What would you like to do?</div></div>
+    </div>
+    <div class="price-banner" id="mh-price-banner" style="display:none;"></div>
+    <div class="card-grid">
+      <button class="tap-card" onclick="openSalesEntry()">
+        <div class="icon icon-onion">🧾</div>
+        <div><div class="label">Sales Today</div><div class="meta">Record what was sold, by batch</div></div>
+        <div class="chev">›</div>
+      </button>
+      <button class="tap-card" onclick="openStockArrival()">
+        <div class="icon icon-branch">🚚</div>
+        <div><div class="label">Stock Arrival</div><div class="meta">Add new incoming stock from a wholesaler</div></div>
+        <div class="chev">›</div>
+      </button>
+    </div>
+  </section>
+
+  <!-- ============ VIEW: STOCK ARRIVAL (incoming stock / batch) ============ -->
+  <section id="view-stock-arrival" class="view">
+    <div class="topbar">
+      <button class="back" onclick="go('view-manager-home')">←</button>
+      <div class="titles"><h1>Stock Arrival</h1><div class="sub" id="sa-branch-sub">Branch</div></div>
+    </div>
+
+    <div class="field"><label>Wholesaler Name</label>
+      <input type="text" id="sa-wholesaler-name" placeholder="e.g. Ramesh Traders">
+    </div>
+    <div class="field"><label>Wholesaler ID (optional)</label>
+      <input type="text" id="sa-wholesaler-id" placeholder="e.g. W-102">
+    </div>
+    <div class="field"><label>Batch / Lot Number</label>
+      <input type="text" id="sa-lot-number" placeholder="e.g. LOT-45">
+    </div>
+
+    <div class="field"><label>Product</label>
+      <div class="pill-row" id="sa-product-row"></div>
+    </div>
+    <div class="field" id="sa-variety-field" style="display:none;"><label>Onion Variety</label>
+      <div class="pill-row" id="sa-variety-row"></div>
+    </div>
+
+    <div class="field"><label>Bags Received</label>
+      <input type="number" id="sa-bags" min="0" step="1" inputmode="numeric" placeholder="e.g. 100">
+    </div>
+    <div class="field"><label>Kgs or Tons Received</label>
+      <div class="qty-row">
+        <input type="number" id="sa-qty" min="0" step="0.1" inputmode="decimal" placeholder="e.g. 5000">
+        <select id="sa-unit"><option value="kg">Kg</option><option value="ton">Tons</option></select>
+      </div>
+    </div>
+    <div class="field"><label>Purchase Price per Kg (optional)</label>
+      <input type="number" id="sa-price" min="0" step="0.1" inputmode="decimal" placeholder="e.g. 8.5">
+    </div>
+    <div class="field"><label>Remarks (optional)</label>
+      <textarea id="sa-notes" placeholder="Any remarks..."></textarea>
+    </div>
+
+    <button class="btn btn-primary" id="sa-save-btn" onclick="saveStockArrival()">Save Stock Arrival</button>
+  </section>
+
+  <!-- ============ VIEW: SALES TODAY (batch-linked, single page) ============ -->
+  <section id="view-sales-entry" class="view">
+    <div class="topbar">
+      <button class="back" onclick="go('view-manager-home')">←</button>
+      <div class="titles"><h1 id="se-branch-title">Branch</h1><div class="sub">Sales Today — pick wholesaler &amp; batch per item</div></div>
+    </div>
+    <div class="price-banner" id="se-price-banner" style="display:none;"></div>
+
+    <div class="accordion" id="acc-sale-onions">
+      <button class="accordion-header" onclick="toggleAccordion('acc-sale-onions')">
+        <div class="icon icon-onion">🧅</div>
+        <div><div class="label">Onions</div><div class="meta">Small / Medium / Large</div></div>
+        <div class="chev">›</div>
+      </button>
+      <div class="accordion-body"><div class="accordion-body-inner" id="sale-onion-fields"></div></div>
+    </div>
+    <div class="accordion" id="acc-sale-garlic">
+      <button class="accordion-header" onclick="toggleAccordion('acc-sale-garlic')">
+        <div class="icon icon-garlic">🧄</div>
+        <div><div class="label">Garlic</div><div class="meta">Wholesaler, batch, bags sold</div></div>
+        <div class="chev">›</div>
+      </button>
+      <div class="accordion-body"><div class="accordion-body-inner" id="sale-garlic-fields"></div></div>
+    </div>
+    <div class="accordion" id="acc-sale-tamarind">
+      <button class="accordion-header" onclick="toggleAccordion('acc-sale-tamarind')">
+        <div class="icon icon-tamarind">🍂</div>
+        <div><div class="label">Tamarind</div><div class="meta">Wholesaler, batch, bags sold</div></div>
+        <div class="chev">›</div>
+      </button>
+      <div class="accordion-body"><div class="accordion-body-inner" id="sale-tamarind-fields"></div></div>
+    </div>
+
+    <button class="btn btn-primary" id="se-save-btn" onclick="saveSalesEntry()" style="margin-top:8px;">Save Sales Update</button>
+    <p class="small-note">Leave a product's fields blank if nothing sold there today.</p>
+  </section>
+
+  <!-- ============ VIEW: OWNER SETTINGS (pricing) ============ -->
+  <section id="view-owner-settings" class="view">
+    <div class="topbar">
+      <button class="back" onclick="go('view-dashboard')">←</button>
+      <div class="titles"><h1>Owner Settings</h1><div class="sub">Daily price &amp; threshold</div></div>
+    </div>
+    <div class="field"><label>Today's Onion Price (₹ / kg)</label>
+      <input type="number" id="price-current" min="0" step="0.1" inputmode="decimal" placeholder="e.g. 10">
+    </div>
+    <div class="field"><label>Minimum Selling Price / Threshold (₹ / kg)</label>
+      <input type="number" id="price-min" min="0" step="0.1" inputmode="decimal" placeholder="e.g. 9">
+    </div>
+    <button class="btn btn-primary" onclick="savePricing()">Save Price</button>
+    <p class="small-note" id="price-current-note"></p>
+  </section>
+
+  <!-- ============ VIEW: OWNER CHATBOT ============ -->
+  <section id="view-chatbot" class="view">
+    <div class="topbar">
+      <button class="back" onclick="go('view-dashboard')">←</button>
+      <div class="titles"><h1>Ask KR Onions</h1><div class="sub">Quick stock questions</div></div>
+    </div>
+    <div id="chat-log" class="chat-log"></div>
+    <div class="chat-input-row">
+      <input type="text" id="chat-input" placeholder="e.g. What is stock in Hanuman Junction?">
+      <button class="btn btn-primary" style="width:auto;padding:14px 18px;" onclick="sendChatMessage()">Ask</button>
+    </div>
+    <p class="small-note">Try: "stock in Gudiwada", "sold today", "batch LOT-45", "low stock"</p>
+  </section>
+
   <!-- ============ VIEW: FULL STOCK ENTRY (new single-page manager flow) ============ -->
+
   <section id="view-full-entry" class="view">
     <div class="topbar">
       <button class="back" onclick="go('view-branch')">←</button>
@@ -304,9 +461,14 @@ h1,h2,h3{font-family:"Poppins","Inter",sans-serif;font-weight:700;margin:0 0 4px
   <section id="view-dashboard" class="view">
     <div class="topbar">
       <button class="back" onclick="goHome()">←</button>
-      <div class="titles"><h1>Owner Dashboard</h1><div class="sub" id="today-label">Today's Stock</div></div>
+      <div class="titles"><h1>Owner Dashboard</h1><div class="sub" id="today-label">Live Stock</div></div>
     </div>
-    <button class="btn btn-ghost" style="margin-bottom:18px;" onclick="openHistory()">📖 View Stock History</button>
+    <div class="price-banner" id="dash-price-banner" style="display:none;"></div>
+    <div class="pill-row" style="margin-bottom:18px;">
+      <div class="pill" style="flex:1;" onclick="openHistory()">📖 History</div>
+      <div class="pill" style="flex:1;" onclick="go('view-chatbot'); initChatbot();">💬 Ask KR Onions</div>
+      <div class="pill" style="flex:1;" onclick="openOwnerSettings()">⚙️ Price Settings</div>
+    </div>
     <div id="branch-summaries">Loading stock...</div>
   </section>
 
@@ -446,7 +608,297 @@ function branchLogin() {
   state.branchId = b.id;
   state.branchName = b.name;
   state.managerName = name;
-  openFullEntry();
+  openManagerHome();
+}
+
+// ---- Manager Home (Sales Today / Stock Arrival) ----------------------------
+function openManagerHome() {
+  document.getElementById("mh-branch-title").textContent = "KR Onions - " + state.branchName;
+  loadPriceBanner("mh-price-banner");
+  go("view-manager-home");
+}
+
+// ---- Stock Arrival (incoming stock / batch creation) ------------------------
+function openStockArrival() {
+  document.getElementById("sa-branch-sub").textContent = "KR Onions - " + state.branchName;
+  ["sa-wholesaler-name","sa-wholesaler-id","sa-lot-number","sa-bags","sa-qty","sa-price","sa-notes"]
+    .forEach(id => document.getElementById(id).value = "");
+  document.getElementById("sa-unit").value = "kg";
+
+  state.saProduct = null; state.saVariety = null;
+
+  const prow = document.getElementById("sa-product-row");
+  prow.innerHTML = "";
+  PRODUCTS.forEach(p => {
+    const pill = document.createElement("div");
+    pill.className = "pill";
+    pill.textContent = p.name;
+    pill.onclick = () => {
+      [...prow.children].forEach(c => c.classList.remove("selected"));
+      pill.classList.add("selected");
+      state.saProduct = p.id;
+      state.saVariety = null;
+      document.getElementById("sa-variety-field").style.display = p.hasVariety ? "block" : "none";
+      if (p.hasVariety) buildVarietyRow();
+    };
+    prow.appendChild(pill);
+  });
+
+  function buildVarietyRow() {
+    const vrow = document.getElementById("sa-variety-row");
+    vrow.innerHTML = "";
+    ONION_VARIETIES.forEach(v => {
+      const pill = document.createElement("div");
+      pill.className = "pill";
+      pill.textContent = v.name;
+      pill.onclick = () => {
+        [...vrow.children].forEach(c => c.classList.remove("selected"));
+        pill.classList.add("selected");
+        state.saVariety = v.id;
+      };
+      vrow.appendChild(pill);
+    });
+  }
+
+  go("view-stock-arrival");
+}
+
+async function saveStockArrival() {
+  const wholesalerName = document.getElementById("sa-wholesaler-name").value.trim();
+  const wholesalerId = document.getElementById("sa-wholesaler-id").value.trim();
+  const lotNumber = document.getElementById("sa-lot-number").value.trim();
+  const bags = document.getElementById("sa-bags").value;
+  const qty = document.getElementById("sa-qty").value;
+  const unit = document.getElementById("sa-unit").value;
+  const price = document.getElementById("sa-price").value;
+  const notes = document.getElementById("sa-notes").value.trim();
+
+  if (!wholesalerName) { showBanner("Enter the wholesaler's name.", "error"); return; }
+  if (!lotNumber) { showBanner("Enter a batch / lot number.", "error"); return; }
+  if (!state.saProduct) { showBanner("Select a product.", "error"); return; }
+  if (state.saProduct === "onions" && !state.saVariety) { showBanner("Select an onion variety.", "error"); return; }
+  if (bags === "" || qty === "") { showBanner("Enter bags and kgs/tons received.", "error"); return; }
+  if (isNaN(bags) || isNaN(qty) || Number(bags) < 0 || Number(qty) < 0) { showBanner("Bags and kgs/tons must be valid non-negative numbers.", "error"); return; }
+
+  const kgs = unit === "ton" ? Number(qty) * 1000 : Number(qty);
+  const saveBtn = document.getElementById("sa-save-btn");
+  saveBtn.disabled = true; saveBtn.textContent = "Saving...";
+
+  try {
+    const res = await fetch(`${WORKER_URL}/api/incoming`, {
+      method: "POST", headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        branchId: state.branchId, branchName: state.branchName,
+        wholesalerName, wholesalerId, lotNumber,
+        productType: state.saProduct, variety: state.saVariety || "none",
+        bags: Number(bags), kgs, unit,
+        purchasePrice: price !== "" ? Number(price) : null,
+        notes
+      })
+    });
+    const data = await res.json().catch(() => ({}));
+    if (!res.ok) throw new Error(data.error || `Save failed (${res.status})`);
+    showBanner(`Stock arrival saved — Batch ${data.batchId}`, "success");
+    setTimeout(() => openManagerHome(), 500);
+  } catch (err) {
+    console.error(err);
+    showBanner("Could not save. Check Worker URL / internet connection.", "error");
+  } finally {
+    saveBtn.disabled = false; saveBtn.textContent = "Save Stock Arrival";
+  }
+}
+
+// ---- Sales Today (batch-linked, single page) --------------------------------
+async function openSalesEntry() {
+  document.getElementById("se-branch-title").textContent = "KR Onions - " + state.branchName;
+  loadPriceBanner("se-price-banner");
+  go("view-sales-entry");
+
+  document.getElementById("sale-onion-fields").innerHTML = `<div class="empty-state">Loading batches...</div>`;
+  document.getElementById("sale-garlic-fields").innerHTML = "";
+  document.getElementById("sale-tamarind-fields").innerHTML = "";
+
+  let liveStock;
+  try {
+    liveStock = await fetchLiveStock({ branch: state.branchId });
+  } catch (err) {
+    console.error(err);
+    document.getElementById("sale-onion-fields").innerHTML =
+      `<div class="empty-state">Could not load batches.<br>Check your Worker URL / internet connection.</div>`;
+    return;
+  }
+  state.saleLiveStock = liveStock.filter(b => b.bagsRemaining > 0);
+
+  buildSaleFields();
+  ["acc-sale-onions","acc-sale-garlic","acc-sale-tamarind"].forEach(id => document.getElementById(id).classList.remove("open"));
+}
+
+function saleField(idPrefix, batches) {
+  if (batches.length === 0) {
+    return `<div class="entry-mini-field"><label style="color:#8a6a53;">No stock recorded for this yet — add a Stock Arrival first.</label></div>`;
+  }
+  const wholesalers = [...new Set(batches.map(b => b.wholesalerName))];
+  return `
+    <div class="entry-mini-field"><label>Wholesaler</label>
+      <select id="${idPrefix}-wholesaler" onchange="onSaleWholesalerChange('${idPrefix}')">
+        <option value="">— Select wholesaler —</option>
+        ${wholesalers.map(w => `<option value="${w}">${w}</option>`).join("")}
+      </select>
+    </div>
+    <div class="entry-mini-field"><label>Batch</label>
+      <select id="${idPrefix}-batch"><option value="">— Select wholesaler first —</option></select>
+    </div>
+    <div class="entry-mini-field"><label>Bags Sold</label>
+      <input type="number" id="${idPrefix}-bagssold" min="0" step="1" inputmode="numeric" placeholder="e.g. 20"></div>
+    <div class="entry-mini-field"><label>Kgs Sold</label>
+      <input type="number" id="${idPrefix}-kgssold" min="0" step="0.1" inputmode="decimal" placeholder="e.g. 1000"></div>
+    <div class="entry-mini-field"><label>Remarks (optional)</label>
+      <textarea id="${idPrefix}-notes" placeholder="Any remarks..."></textarea></div>`;
+}
+
+function onSaleWholesalerChange(idPrefix) {
+  const wholesaler = document.getElementById(`${idPrefix}-wholesaler`).value;
+  const batchSelect = document.getElementById(`${idPrefix}-batch`);
+  const batches = (state.saleBatchesByField[idPrefix] || []).filter(b => b.wholesalerName === wholesaler);
+  batchSelect.innerHTML = batches.length
+    ? batches.map(b => `<option value="${b.batchId}">${b.lotNumber} — ${fmtNum(b.bagsRemaining)} bags left</option>`).join("")
+    : `<option value="">No batches for this wholesaler</option>`;
+}
+
+function buildSaleFields() {
+  state.saleBatchesByField = {};
+
+  const onionHtml = ONION_VARIETIES.map(v => {
+    const idPrefix = "sale-onion-" + v.id;
+    const batches = state.saleLiveStock.filter(b => b.productType === "onions" && b.variety === v.id);
+    state.saleBatchesByField[idPrefix] = batches;
+    return `<div class="variety-block"><div class="variety-name">${v.name}</div>${saleField(idPrefix, batches)}</div>`;
+  }).join("");
+  document.getElementById("sale-onion-fields").innerHTML = onionHtml;
+
+  const garlicBatches = state.saleLiveStock.filter(b => b.productType === "garlic");
+  state.saleBatchesByField["sale-garlic"] = garlicBatches;
+  document.getElementById("sale-garlic-fields").innerHTML = saleField("sale-garlic", garlicBatches);
+
+  const tamarindBatches = state.saleLiveStock.filter(b => b.productType === "tamarind");
+  state.saleBatchesByField["sale-tamarind"] = tamarindBatches;
+  document.getElementById("sale-tamarind-fields").innerHTML = saleField("sale-tamarind", tamarindBatches);
+}
+
+function readSaleFields(idPrefix, productType, variety, label) {
+  const batches = state.saleBatchesByField[idPrefix] || [];
+  if (batches.length === 0) return { skip: true };
+
+  const wholesalerEl = document.getElementById(`${idPrefix}-wholesaler`);
+  const batchEl = document.getElementById(`${idPrefix}-batch`);
+  const bagsEl = document.getElementById(`${idPrefix}-bagssold`);
+  const kgsEl = document.getElementById(`${idPrefix}-kgssold`);
+  const notesEl = document.getElementById(`${idPrefix}-notes`);
+
+  const wholesaler = wholesalerEl.value;
+  const batchId = batchEl.value;
+  const bagsSold = bagsEl.value.trim();
+  const kgsSold = kgsEl.value.trim();
+  const notes = notesEl.value.trim();
+
+  if (!wholesaler && bagsSold === "" && kgsSold === "") return { skip: true };
+
+  if (!wholesaler || !batchId) return { error: `${label}: select a wholesaler and batch.` };
+  if (bagsSold === "" || kgsSold === "") return { error: `${label}: enter both bags sold and kgs sold.` };
+  if (isNaN(bagsSold) || isNaN(kgsSold) || Number(bagsSold) < 0 || Number(kgsSold) < 0) {
+    return { error: `${label}: bags sold and kgs sold must be valid non-negative numbers.` };
+  }
+
+  const batch = batches.find(b => b.batchId === batchId);
+  if (batch && Number(bagsSold) > batch.bagsRemaining) {
+    return { error: `${label}: only ${fmtNum(batch.bagsRemaining)} bags remaining in that batch.` };
+  }
+
+  return {
+    skip: false,
+    payload: {
+      branchId: state.branchId, branchName: state.branchName,
+      productType, variety: variety || "none",
+      wholesalerName: wholesaler, batchId,
+      bagsSold: Number(bagsSold), kgsSold: Number(kgsSold),
+      notes, managerName: state.managerName
+    }
+  };
+}
+
+async function saveSalesEntry() {
+  const toSave = [];
+  let errorMsg = null;
+
+  ONION_VARIETIES.forEach(v => {
+    const r = readSaleFields("sale-onion-" + v.id, "onions", v.id, v.name);
+    if (r.error && !errorMsg) errorMsg = r.error;
+    if (!r.skip && r.payload) toSave.push(r.payload);
+  });
+  const garlicR = readSaleFields("sale-garlic", "garlic", "none", "Garlic");
+  if (garlicR.error && !errorMsg) errorMsg = garlicR.error;
+  if (!garlicR.skip && garlicR.payload) toSave.push(garlicR.payload);
+
+  const tamarindR = readSaleFields("sale-tamarind", "tamarind", "none", "Tamarind");
+  if (tamarindR.error && !errorMsg) errorMsg = tamarindR.error;
+  if (!tamarindR.skip && tamarindR.payload) toSave.push(tamarindR.payload);
+
+  if (errorMsg) { showBanner(errorMsg, "error"); return; }
+  if (toSave.length === 0) { showBanner("Enter at least one sale before saving.", "error"); return; }
+
+  const saveBtn = document.getElementById("se-save-btn");
+  saveBtn.disabled = true; saveBtn.textContent = "Saving...";
+
+  const saved = [];
+  try {
+    for (const payload of toSave) {
+      const res = await fetch(`${WORKER_URL}/api/sales`, {
+        method: "POST", headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(payload)
+      });
+      const data = await res.json().catch(() => ({}));
+      if (!res.ok) throw new Error(data.error || `Save failed (${res.status})`);
+      saved.push(data);
+    }
+    showBanner("Sales update saved!", "success");
+    setTimeout(() => openSalesSummary(saved), 400);
+  } catch (err) {
+    console.error(err);
+    showBanner(`Saved ${saved.length} of ${toSave.length} items — then: ${err.message}`, "error");
+  } finally {
+    saveBtn.disabled = false; saveBtn.textContent = "Save Sales Update";
+  }
+}
+
+function openSalesSummary(records) {
+  const first = records[0];
+  const onionRecords = records.filter(r => r.productType === "onions");
+  const garlicRecord = records.find(r => r.productType === "garlic");
+  const tamarindRecord = records.find(r => r.productType === "tamarind");
+
+  const lines = [
+    "KR Onions — Sales Update",
+    `Branch: ${first.branchName}`,
+    `Date: ${first.dateLabel}`,
+    `Time: ${first.timeLabel}`,
+    ""
+  ];
+  if (onionRecords.length > 0) {
+    const totalBags = onionRecords.reduce((s,r)=>s+Number(r.bagsSold||0),0);
+    lines.push(`Onions Total Bags Sold: ${fmtNum(totalBags)}`);
+    onionRecords.forEach(r => lines.push(`- ${lineLabel(r)} (${r.wholesalerName}, Batch ${r.batchId}): ${fmtNum(r.bagsSold)} bags, ${fmtNum(r.kgsSold)} kgs`));
+    lines.push("");
+  }
+  if (garlicRecord) lines.push(`Garlic (${garlicRecord.wholesalerName}, Batch ${garlicRecord.batchId}): ${fmtNum(garlicRecord.bagsSold)} bags, ${fmtNum(garlicRecord.kgsSold)} kgs`, "");
+  if (tamarindRecord) lines.push(`Tamarind (${tamarindRecord.wholesalerName}, Batch ${tamarindRecord.batchId}): ${fmtNum(tamarindRecord.bagsSold)} bags, ${fmtNum(tamarindRecord.kgsSold)} kgs`, "");
+  lines.push(`Updated by: ${first.managerName}`);
+
+  const msg = lines.join("\n");
+  document.getElementById("summary-text").textContent = msg;
+  document.getElementById("wa-btn").onclick = () => window.open(`https://wa.me/?text=${encodeURIComponent(msg)}`, "_blank");
+  const addAnotherBtn = document.querySelector("#view-summary .btn-primary");
+  addAnotherBtn.onclick = () => openManagerHome();
+  go("view-summary");
 }
 
 // ---- NEW: single-page full stock entry (Onions/Garlic/Tamarind together) -----
@@ -767,10 +1219,11 @@ function addAnother() {
   openProductSelect();
 }
 
-// ---- Owner dashboard ----------------------------------------------------
+// ---- Owner dashboard (v2: batch-level, live-stock based) ----------------
 function openDashboard() {
-  document.getElementById("today-label").textContent = "Current Stock (updates every few seconds — closing stock carries over until the next update)";
+  document.getElementById("today-label").textContent = "Live Stock (Incoming − Sales, updates every few seconds)";
   go("view-dashboard");
+  loadPriceBanner("dash-price-banner");
   pollDashboard();
 }
 
@@ -783,8 +1236,8 @@ function pollDashboard() {
   const tick = async () => {
     const container = document.getElementById("branch-summaries");
     try {
-      const rows = await fetchCurrentStock();
-      renderDashboard(rows, container);
+      const [liveStock, sales] = await Promise.all([fetchLiveStock(), fetchSales()]);
+      renderDashboard(liveStock, sales, container);
     } catch (err) {
       console.error(err);
       container.innerHTML = `<div class="empty-state">Could not load stock.<br>Check your Worker URL / internet connection.</div>`;
@@ -794,78 +1247,263 @@ function pollDashboard() {
   dashboardTimer = setInterval(tick, 8000);
 }
 
-async function fetchCurrentStock() {
-  const res = await fetch(`${WORKER_URL}/api/current`);
+async function fetchLiveStock(filters = {}) {
+  const params = new URLSearchParams();
+  if (filters.branch) params.set("branch", filters.branch);
+  if (filters.product) params.set("product", filters.product);
+  if (filters.variety) params.set("variety", filters.variety);
+  const res = await fetch(`${WORKER_URL}/api/live-stock?${params.toString()}`);
   if (!res.ok) throw new Error(`Fetch failed (${res.status})`);
   return await res.json();
 }
 
-function renderDashboard(records, container) {
+async function fetchSales(filters = {}) {
+  const params = new URLSearchParams();
+  if (filters.branch) params.set("branch", filters.branch);
+  if (filters.date) params.set("date", filters.date);
+  if (filters.batchId) params.set("batchId", filters.batchId);
+  const res = await fetch(`${WORKER_URL}/api/sales?${params.toString()}`);
+  if (!res.ok) throw new Error(`Fetch failed (${res.status})`);
+  return await res.json();
+}
+
+function renderDashboard(liveStock, sales, container) {
   container.innerHTML = "";
-  if (records.length === 0) {
-    container.innerHTML = `<div class="empty-state">No stock updates yet today.<br>Ask branch managers to update stock.</div>`;
+  if (liveStock.length === 0) {
+    container.innerHTML = `<div class="empty-state">No stock recorded yet.<br>Ask a branch manager to log a Stock Arrival.</div>`;
     return;
   }
+
   BRANCHES.forEach(branch => {
-    const branchRecords = records.filter(r => r.branchId === branch.id)
-      .sort((a,b) => (b.createdAt||"").localeCompare(a.createdAt||""));
+    const batches = liveStock.filter(b => b.branchId === branch.id);
+    const branchSales = sales.filter(s => s.branchId === branch.id);
     const box = document.createElement("div");
     box.className = "branch-summary";
 
-    if (branchRecords.length === 0) {
+    if (batches.length === 0) {
       box.innerHTML = `<div class="head"><h3>KR Onions - ${branch.name}</h3></div>
-        <div class="updated">No updates yet today</div>`;
+        <div class="updated">No stock arrivals recorded yet</div>`;
       container.appendChild(box);
       return;
     }
 
-    const latest = branchRecords[0];
-    const latestByKey = {};
-    branchRecords.forEach(r => {
-      const key = r.productType + ":" + (r.variety || "none");
-      if (!latestByKey[key] || r.createdAt > latestByKey[key].createdAt) latestByKey[key] = r;
-    });
-    const items = Object.values(latestByKey);
+    // "Last updated" = most recent event of any kind (arrival or sale) for this branch.
+    const lastEventTimes = [...batches.map(b => b.createdAt), ...branchSales.map(s => s.createdAt)];
+    const lastRow = [...batches, ...branchSales].sort((a,b)=>(b.createdAt||"").localeCompare(a.createdAt||""))[0];
 
-    const onionItems = items.filter(r => r.productType === "onions")
-      .sort((a,b) => a.variety.localeCompare(b.variety));
-    const garlicItem = items.find(r => r.productType === "garlic");
-    const tamarindItem = items.find(r => r.productType === "tamarind");
-
-    const onionTotalBags = onionItems.reduce((s,r)=>s+Number(r.bags||0),0);
+    const onionBatches = batches.filter(b => b.productType === "onions");
+    const garlicBatches = batches.filter(b => b.productType === "garlic");
+    const tamarindBatches = batches.filter(b => b.productType === "tamarind");
 
     let sectionsHtml = "";
-    if (onionItems.length > 0) {
-      sectionsHtml += `
-        <div class="onions-total-line"><span>Onions Total Bags</span><span>${fmtNum(onionTotalBags)}</span></div>
-        <div class="breakdown-list">
-          ${onionItems.map(r => `
-            <div class="breakdown-row"><span>${lineLabel(r)}</span>
-            <span class="vals">${fmtNum(r.bags)} bags, ${fmtNum(r.kgs)} kgs</span></div>`).join("")}
-        </div>`;
+
+    if (onionBatches.length > 0) {
+      const onionTotalBags = onionBatches.reduce((s,b)=>s+Number(b.bagsRemaining||0),0);
+      sectionsHtml += `<div class="onions-total-line"><span>Onions Total Bags</span><span>${fmtNum(onionTotalBags)}</span></div>`;
+      ONION_VARIETIES.forEach(v => {
+        const vBatches = onionBatches.filter(b => b.variety === v.id);
+        if (vBatches.length === 0) return;
+        const vBags = vBatches.reduce((s,b)=>s+Number(b.bagsRemaining||0),0);
+        const vKgs = vBatches.reduce((s,b)=>s+Number(b.kgsRemaining||0),0);
+        sectionsHtml += `<div class="variety-group-title">${v.name}: ${fmtNum(vBags)} bags, ${fmtNum(vKgs)} kgs</div>`;
+        sectionsHtml += batchListHtml(vBatches);
+      });
     }
-    if (garlicItem) {
-      sectionsHtml += `
-        <div class="breakdown-list" style="margin-top:12px;">
-          <div class="breakdown-row"><span>Garlic</span>
-          <span class="vals">${fmtNum(garlicItem.bags)} bags, ${fmtNum(garlicItem.kgs)} kgs</span></div>
-        </div>`;
+    if (garlicBatches.length > 0) {
+      const gBags = garlicBatches.reduce((s,b)=>s+Number(b.bagsRemaining||0),0);
+      const gKgs = garlicBatches.reduce((s,b)=>s+Number(b.kgsRemaining||0),0);
+      sectionsHtml += `<div class="variety-group-title">Garlic: ${fmtNum(gBags)} bags, ${fmtNum(gKgs)} kgs</div>`;
+      sectionsHtml += batchListHtml(garlicBatches);
     }
-    if (tamarindItem) {
-      sectionsHtml += `
-        <div class="breakdown-list" style="margin-top:${garlicItem ? "0" : "12px"};">
-          <div class="breakdown-row"><span>Tamarind</span>
-          <span class="vals">${fmtNum(tamarindItem.bags)} bags, ${fmtNum(tamarindItem.kgs)} kgs</span></div>
-        </div>`;
+    if (tamarindBatches.length > 0) {
+      const tBags = tamarindBatches.reduce((s,b)=>s+Number(b.bagsRemaining||0),0);
+      const tKgs = tamarindBatches.reduce((s,b)=>s+Number(b.kgsRemaining||0),0);
+      sectionsHtml += `<div class="variety-group-title">Tamarind: ${fmtNum(tBags)} bags, ${fmtNum(tKgs)} kgs</div>`;
+      sectionsHtml += batchListHtml(tamarindBatches);
     }
     if (!sectionsHtml) sectionsHtml = `<div class="empty-state" style="padding:10px 0;">No product data yet.</div>`;
 
     box.innerHTML = `
       <div class="head"><h3>KR Onions - ${branch.name}</h3></div>
-      <div class="updated">Last updated: ${latest.dateLabel}, ${latest.timeLabel} · ${updateTypeLabel(latest.updateType)}</div>
+      <div class="updated">Last updated: ${lastRow ? lastRow.dateLabel + ", " + lastRow.timeLabel : "—"}</div>
       ${sectionsHtml}`;
     container.appendChild(box);
   });
+}
+
+function batchListHtml(batches) {
+  return `<div class="breakdown-list">` + batches
+    .filter(b => b.bagsRemaining > 0)
+    .sort((a,b) => (b.bagsRemaining||0) - (a.bagsRemaining||0))
+    .map(b => `
+      <div class="batch-row">
+        <div><div class="who">${b.wholesalerName}</div><div class="bid">Batch: ${b.lotNumber || b.batchId}</div></div>
+        <div class="rem">${fmtNum(b.bagsRemaining)} bags</div>
+      </div>`).join("") + `</div>`;
+}
+
+// ---- Pricing --------------------------------------------------------------
+async function fetchPrice() {
+  const res = await fetch(`${WORKER_URL}/api/price`);
+  if (!res.ok) throw new Error(`Fetch failed (${res.status})`);
+  return await res.json();
+}
+
+async function loadPriceBanner(elId) {
+  const el = document.getElementById(elId);
+  try {
+    const price = await fetchPrice();
+    if (!price) { el.style.display = "none"; return; }
+    el.style.display = "flex";
+    el.innerHTML = `
+      <div class="p-block"><div class="p-num">₹${fmtNum(price.pricePerKg)}/kg</div><div class="p-lab">Today's Onion Price</div></div>
+      <div class="p-block"><div class="p-num">₹${fmtNum(price.minPricePerKg)}/kg</div><div class="p-lab">Minimum Allowed Price</div></div>`;
+  } catch (err) {
+    console.error(err);
+    el.style.display = "none";
+  }
+}
+
+function openOwnerSettings() {
+  go("view-owner-settings");
+  fetchPrice().then(price => {
+    if (price) {
+      document.getElementById("price-current").value = price.pricePerKg;
+      document.getElementById("price-min").value = price.minPricePerKg;
+      document.getElementById("price-current-note").textContent =
+        `Last set ${price.dateLabel}, ${price.timeLabel} by ${price.setBy}`;
+    } else {
+      document.getElementById("price-current-note").textContent = "No price set yet today.";
+    }
+  }).catch(() => {});
+}
+
+async function savePricing() {
+  const pricePerKg = document.getElementById("price-current").value;
+  const minPricePerKg = document.getElementById("price-min").value;
+  if (pricePerKg === "" || minPricePerKg === "") { showBanner("Enter both price fields.", "error"); return; }
+  if (isNaN(pricePerKg) || isNaN(minPricePerKg)) { showBanner("Prices must be numbers.", "error"); return; }
+  try {
+    await fetch(`${WORKER_URL}/api/price`, {
+      method: "POST", headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ pricePerKg: Number(pricePerKg), minPricePerKg: Number(minPricePerKg), setBy: "Owner" })
+    });
+    showBanner("Price updated for today.", "success");
+    go("view-dashboard");
+  } catch (err) {
+    console.error(err);
+    showBanner("Could not save price. Check connection.", "error");
+  }
+}
+
+// ---- Owner Chatbot (rule-based, no server AI) ------------------------------
+let chatbotReady = false;
+function initChatbot() {
+  if (chatbotReady) return;
+  chatbotReady = true;
+  const log = document.getElementById("chat-log");
+  log.innerHTML = `<div class="chat-bubble bot">Hi! Ask me things like "stock in Hanuman Junction", "sold today", "batch LOT-45", or "low stock".</div>`;
+  document.getElementById("chat-input").addEventListener("keydown", e => {
+    if (e.key === "Enter") sendChatMessage();
+  });
+}
+
+function addChatBubble(text, who) {
+  const log = document.getElementById("chat-log");
+  const bubble = document.createElement("div");
+  bubble.className = `chat-bubble ${who}`;
+  bubble.textContent = text;
+  log.appendChild(bubble);
+  log.scrollTop = log.scrollHeight;
+}
+
+async function sendChatMessage() {
+  const input = document.getElementById("chat-input");
+  const q = input.value.trim();
+  if (!q) return;
+  addChatBubble(q, "user");
+  input.value = "";
+  addChatBubble("Checking...", "bot");
+  const log = document.getElementById("chat-log");
+
+  try {
+    const answer = await answerChatQuestion(q.toLowerCase());
+    log.lastChild.textContent = answer;
+  } catch (err) {
+    console.error(err);
+    log.lastChild.textContent = "Sorry, couldn't fetch that — check the Worker connection.";
+  }
+}
+
+async function answerChatQuestion(q) {
+  const [liveStock, sales] = await Promise.all([fetchLiveStock(), fetchSales()]);
+
+  // "batch <code>"
+  const batchMatch = q.match(/batch\s+([a-z0-9\-]+)/i);
+  if (batchMatch) {
+    const code = batchMatch[1].toLowerCase();
+    const found = liveStock.filter(b => b.batchId.toLowerCase().includes(code) || String(b.lotNumber).toLowerCase().includes(code));
+    if (found.length === 0) return `No batch found matching "${code}".`;
+    return found.map(b =>
+      `Batch ${b.lotNumber} (${b.wholesalerName}) — ${b.branchName}\n${lineLabel(b)}: ${fmtNum(b.bagsRemaining)} bags remaining of ${fmtNum(b.bags)} received`
+    ).join("\n\n");
+  }
+
+  // "sold today" / "sales today"
+  if (q.includes("sold") || q.includes("sales today")) {
+    const today = dateKeyFor();
+    const todaySales = sales.filter(s => s.dateKey === today);
+    if (todaySales.length === 0) return "No sales recorded today yet.";
+    const byBranch = {};
+    todaySales.forEach(s => {
+      byBranch[s.branchName] = byBranch[s.branchName] || { bags: 0 };
+      byBranch[s.branchName].bags += Number(s.bagsSold || 0);
+    });
+    return "Sold today:\n" + Object.entries(byBranch).map(([name, v]) => `${name}: ${fmtNum(v.bags)} bags`).join("\n");
+  }
+
+  // "low stock"
+  if (q.includes("low stock") || q.includes("low")) {
+    const threshold = 20;
+    const low = liveStock.filter(b => b.bagsRemaining > 0 && b.bagsRemaining < threshold);
+    if (low.length === 0) return `No batches under ${threshold} bags remaining right now.`;
+    return `Batches running low (under ${threshold} bags):\n` + low.map(b =>
+      `${b.branchName} — ${lineLabel(b)} — ${b.wholesalerName} (Batch ${b.lotNumber}): ${fmtNum(b.bagsRemaining)} bags left`
+    ).join("\n");
+  }
+
+  // "which wholesaler stock is remaining"
+  if (q.includes("wholesaler")) {
+    const remaining = liveStock.filter(b => b.bagsRemaining > 0);
+    if (remaining.length === 0) return "No wholesaler stock remaining.";
+    return "Remaining stock by wholesaler:\n" + remaining.map(b =>
+      `${b.wholesalerName} (Batch ${b.lotNumber}) — ${b.branchName}, ${lineLabel(b)}: ${fmtNum(b.bagsRemaining)} bags`
+    ).join("\n");
+  }
+
+  // branch name mentioned -> full branch summary
+  const branch = BRANCHES.find(b => q.includes(b.name.toLowerCase()));
+  if (branch) {
+    const batches = liveStock.filter(b => b.branchId === branch.id && b.bagsRemaining > 0);
+    if (batches.length === 0) return `No live stock recorded for ${branch.name} yet.`;
+    const lines = [`${branch.name} Stock:`];
+    ONION_VARIETIES.forEach(v => {
+      const vb = batches.filter(b => b.productType === "onions" && b.variety === v.id);
+      if (vb.length) lines.push(`${v.name}: ${fmtNum(vb.reduce((s,b)=>s+b.bagsRemaining,0))} bags`);
+    });
+    const garlic = batches.filter(b => b.productType === "garlic");
+    if (garlic.length) lines.push(`Garlic: ${fmtNum(garlic.reduce((s,b)=>s+b.bagsRemaining,0))} bags`);
+    const tamarind = batches.filter(b => b.productType === "tamarind");
+    if (tamarind.length) lines.push(`Tamarind: ${fmtNum(tamarind.reduce((s,b)=>s+b.bagsRemaining,0))} bags`);
+
+    lines.push("", "Top Wholesalers:");
+    batches.sort((a,b)=>b.bagsRemaining-a.bagsRemaining).slice(0,5).forEach(b => {
+      lines.push(`- ${b.wholesalerName} (Batch ${b.lotNumber}): ${fmtNum(b.bagsRemaining)} bags remaining`);
+    });
+    return lines.join("\n");
+  }
+
+  return `I can answer things like:\n- "What is stock in Hanuman Junction?"\n- "Which wholesaler stock is remaining?"\n- "How much stock sold today?"\n- "Show stock for batch LOT-45"\n- "Which batch is low stock?"`;
 }
 
 // ---- History -------------------------------------------------------------
