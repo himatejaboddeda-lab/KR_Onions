@@ -10,7 +10,6 @@
 <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@700;800&family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
 
 <style>
-/* ================= THEME ================= */
 :root{
   --ink:#2E1B12; --maroon:#7A2E3D; --maroon-dk:#5C2130;
   --cream:#FBF3E7; --sack:#F2E4CE; --gold:#C98A2B; --gold-lt:#E7C9A9;
@@ -72,8 +71,10 @@ h1,h2,h3{font-family:"Poppins","Inter",sans-serif;font-weight:700;margin:0 0 4px
 .btn-primary{background:var(--maroon);color:#fff;}
 .btn-whatsapp{background:#25D366;color:#fff;}
 .btn-ghost{background:var(--sack);color:var(--maroon-dk);}
+.btn-danger{background:#fff;color:var(--red);border:2px solid var(--red);}
 .btn[disabled]{opacity:.55;cursor:not-allowed;}
 .btn+.btn{margin-top:12px;}
+.btn-sm{padding:9px 12px;font-size:.82rem;border-radius:10px;width:auto;}
 
 .kr-banner{position:fixed;left:50%;bottom:24px;transform:translate(-50%,20px);max-width:90%;
   padding:13px 20px;border-radius:12px;font-weight:600;color:#fff;background:var(--ink);
@@ -85,10 +86,6 @@ h1,h2,h3{font-family:"Poppins","Inter",sans-serif;font-weight:700;margin:0 0 4px
   box-shadow:var(--shadow);padding:18px;margin-bottom:16px;}
 .branch-summary .head h3{color:var(--maroon-dk);font-size:1.1rem;}
 .branch-summary .updated{font-size:.78rem;color:#8a6a53;margin-bottom:12px;}
-.totals-row{display:flex;gap:10px;margin-bottom:12px;}
-.totals-row .stat{flex:1;background:var(--sack);border-radius:12px;padding:10px 12px;text-align:center;}
-.totals-row .stat .num{font-size:1.15rem;font-weight:800;color:var(--maroon-dk);}
-.totals-row .stat .lab{font-size:.72rem;color:#8a6a53;}
 .breakdown-list{border-top:1px dashed var(--sack);padding-top:10px;}
 .breakdown-row{display:flex;justify-content:space-between;padding:6px 0;font-size:.9rem;}
 .breakdown-row .vals{color:#8a6a53;}
@@ -102,7 +99,8 @@ h1,h2,h3{font-family:"Poppins","Inter",sans-serif;font-weight:700;margin:0 0 4px
 .record-row .sub{font-size:.8rem;color:#8a6a53;margin:3px 0 8px;}
 .record-row .nums{display:flex;gap:16px;font-size:.92rem;}
 .record-row .tag{display:inline-block;font-size:.7rem;font-weight:700;padding:3px 8px;border-radius:8px;
-  background:var(--gold-lt);color:var(--maroon-dk);margin-top:6px;}
+  background:var(--gold-lt);color:var(--maroon-dk);margin-top:6px;margin-right:6px;}
+.record-row .row-actions{display:flex;gap:8px;margin-top:10px;}
 
 .summary-box{background:#fff;border:2px solid var(--sack);border-radius:var(--radius);padding:20px;
   box-shadow:var(--shadow);margin-bottom:20px;white-space:pre-wrap;font-size:.94rem;line-height:1.5;}
@@ -110,7 +108,30 @@ h1,h2,h3{font-family:"Poppins","Inter",sans-serif;font-weight:700;margin:0 0 4px
   display:flex;align-items:center;justify-content:center;font-size:32px;margin:0 auto 14px;}
 .center{text-align:center;} .small-note{font-size:.8rem;color:#8a6a53;text-align:center;margin-top:10px;}
 
-/* ---- Accordion (full stock entry page) ---- */
+.price-banner{background:var(--maroon);color:#fff;border-radius:14px;padding:14px 16px;margin-bottom:18px;
+  display:flex;justify-content:space-between;gap:10px;font-size:.88rem;}
+.price-banner .p-block{text-align:center;flex:1;}
+.price-banner .p-num{font-size:1.15rem;font-weight:800;}
+.price-banner .p-lab{font-size:.7rem;opacity:.85;}
+
+.batch-row{display:flex;justify-content:space-between;padding:7px 0;font-size:.85rem;
+  border-bottom:1px dashed var(--sack);}
+.batch-row:last-child{border-bottom:none;}
+.batch-row .who{color:var(--ink);}
+.batch-row .bid{font-size:.72rem;color:#8a6a53;}
+.batch-row .rem{color:var(--maroon-dk);font-weight:700;}
+.variety-group-title{font-weight:700;color:var(--maroon-dk);font-size:.88rem;margin:12px 0 4px;}
+.onions-total-line{display:flex;justify-content:space-between;padding:10px 12px;background:var(--sack);
+  border-radius:10px;margin-bottom:12px;font-weight:700;color:var(--maroon-dk);font-size:.9rem;}
+
+.chat-log{display:flex;flex-direction:column;gap:10px;margin-bottom:16px;min-height:120px;}
+.chat-bubble{max-width:88%;padding:12px 14px;border-radius:14px;font-size:.9rem;line-height:1.5;white-space:pre-wrap;}
+.chat-bubble.user{align-self:flex-end;background:var(--maroon);color:#fff;border-bottom-right-radius:4px;}
+.chat-bubble.bot{align-self:flex-start;background:#fff;border:2px solid var(--sack);color:var(--ink);border-bottom-left-radius:4px;}
+.chat-input-row{display:flex;gap:8px;}
+.chat-input-row input{flex:1;padding:14px;border-radius:12px;border:2px solid var(--sack);font-size:.95rem;font-family:inherit;}
+.chat-input-row input:focus{outline:none;border-color:var(--gold);}
+
 .accordion{background:#fff;border:2px solid var(--sack);border-radius:var(--radius);
   box-shadow:var(--shadow);margin-bottom:14px;overflow:hidden;}
 .accordion-header{display:flex;align-items:center;gap:14px;padding:16px 18px;cursor:pointer;
@@ -122,7 +143,7 @@ h1,h2,h3{font-family:"Poppins","Inter",sans-serif;font-weight:700;margin:0 0 4px
 .accordion-header .chev{margin-left:auto;color:#C9B79E;font-size:1.2rem;transition:transform .2s ease;}
 .accordion.open .accordion-header .chev{transform:rotate(90deg);}
 .accordion-body{max-height:0;overflow:hidden;transition:max-height .25s ease;}
-.accordion.open .accordion-body{max-height:2000px;}
+.accordion.open .accordion-body{max-height:2400px;}
 .accordion-body-inner{padding:4px 18px 18px;}
 
 .variety-block{border-top:1px dashed var(--sack);padding-top:14px;margin-top:14px;}
@@ -141,40 +162,17 @@ h1,h2,h3{font-family:"Poppins","Inter",sans-serif;font-weight:700;margin:0 0 4px
   font-size:.95rem;color:var(--ink);font-family:inherit;}
 .entry-mini-field textarea{min-height:50px;resize:vertical;}
 .entry-mini-field input:focus,.entry-mini-field textarea:focus,.entry-mini-field select:focus{outline:none;border-color:var(--gold);}
+.arrival-date-note{font-size:.78rem;color:var(--green);font-weight:600;margin:-4px 0 10px;}
 
-.onions-total-line{display:flex;justify-content:space-between;padding:10px 12px;background:var(--sack);
-  border-radius:10px;margin-bottom:12px;font-weight:700;color:var(--maroon-dk);font-size:.9rem;}
-
-/* ---- Price banner ---- */
-.price-banner{background:var(--maroon);color:#fff;border-radius:14px;padding:14px 16px;margin-bottom:18px;
-  display:flex;justify-content:space-between;gap:10px;font-size:.88rem;}
-.price-banner .p-block{text-align:center;flex:1;}
-.price-banner .p-num{font-size:1.15rem;font-weight:800;}
-.price-banner .p-lab{font-size:.7rem;opacity:.85;}
-
-/* ---- Batch breakdown (dashboard) ---- */
-.batch-row{display:flex;justify-content:space-between;padding:7px 0;font-size:.85rem;
-  border-bottom:1px dashed var(--sack);}
-.batch-row:last-child{border-bottom:none;}
-.batch-row .who{color:var(--ink);}
-.batch-row .bid{font-size:.72rem;color:#8a6a53;}
-.batch-row .rem{color:var(--maroon-dk);font-weight:700;}
-.variety-group-title{font-weight:700;color:var(--maroon-dk);font-size:.88rem;margin:12px 0 4px;}
-
-/* ---- Chatbot ---- */
-.chat-log{display:flex;flex-direction:column;gap:10px;margin-bottom:16px;min-height:120px;}
-.chat-bubble{max-width:88%;padding:12px 14px;border-radius:14px;font-size:.9rem;line-height:1.5;white-space:pre-wrap;}
-.chat-bubble.user{align-self:flex-end;background:var(--maroon);color:#fff;border-bottom-right-radius:4px;}
-.chat-bubble.bot{align-self:flex-start;background:#fff;border:2px solid var(--sack);color:var(--ink);border-bottom-left-radius:4px;}
-.chat-input-row{display:flex;gap:8px;}
-.chat-input-row input{flex:1;padding:14px;border-radius:12px;border:2px solid var(--sack);font-size:.95rem;font-family:inherit;}
-.chat-input-row input:focus{outline:none;border-color:var(--gold);}
+.debug-box{background:#fff;border:2px dashed var(--sack);border-radius:14px;padding:14px;margin-bottom:16px;
+  font-size:.78rem;color:#8a6a53;font-family:monospace;white-space:pre-wrap;}
+.debug-toggle{font-size:.8rem;color:var(--maroon);font-weight:700;text-align:center;margin-bottom:10px;cursor:pointer;}
 </style>
 </head>
 <body>
 <div class="app-shell">
 
-  <!-- ============ VIEW: HOME / ROLE SELECT ============ -->
+  <!-- ============ HOME ============ -->
   <section id="view-home" class="view active">
     <div class="hero">
       <svg class="hero-onion" viewBox="0 0 120 120" xmlns="http://www.w3.org/2000/svg">
@@ -194,10 +192,7 @@ h1,h2,h3{font-family:"Poppins","Inter",sans-serif;font-weight:700;margin:0 0 4px
           <ellipse cx="73" cy="66" rx="7" ry="9" fill="#fff" opacity=".9"/>
           <circle cx="73" cy="66" r="3.4" fill="#2E1B12"/>
           <path d="M50 86 Q60 94 70 86" fill="none" stroke="#2E1B12" stroke-width="3" stroke-linecap="round"/>
-          <ellipse cx="42" cy="76" rx="4" ry="2.5" fill="#E7A9B8" opacity=".7"/>
-          <ellipse cx="78" cy="76" rx="4" ry="2.5" fill="#E7A9B8" opacity=".7"/>
         </g>
-        <path d="M48 114 Q60 122 72 114" fill="none" stroke="#C98A2B" stroke-width="3" stroke-linecap="round" opacity=".8"/>
         <defs>
           <radialGradient id="onionShade" cx="38%" cy="32%" r="75%">
             <stop offset="0%" stop-color="#B25D75"/>
@@ -211,21 +206,19 @@ h1,h2,h3{font-family:"Poppins","Inter",sans-serif;font-weight:700;margin:0 0 4px
     <div class="card-grid">
       <button class="tap-card role-card" onclick="go('view-owner-pin')">
         <div class="icon icon-onion">👑</div>
-        <div><div class="label">I'm the Owner</div>
-        <div class="meta">View live stock from all branches</div></div>
+        <div><div class="label">I'm the Owner</div><div class="meta">View live stock from all branches</div></div>
         <div class="chev">›</div>
       </button>
       <button class="tap-card role-card" onclick="startManagerFlow()">
         <div class="icon icon-branch">🧑‍💼</div>
-        <div><div class="label">I'm a Branch Manager</div>
-        <div class="meta">Update today's stock</div></div>
+        <div><div class="label">I'm a Branch Manager</div><div class="meta">Update today's stock</div></div>
         <div class="chev">›</div>
       </button>
     </div>
     <p class="small-note">KR Onions Stock Update · v1.0</p>
   </section>
 
-  <!-- ============ VIEW: OWNER PIN ============ -->
+  <!-- ============ OWNER PIN ============ -->
   <section id="view-owner-pin" class="view">
     <div class="topbar">
       <button class="back" onclick="go('view-home')">←</button>
@@ -237,7 +230,7 @@ h1,h2,h3{font-family:"Poppins","Inter",sans-serif;font-weight:700;margin:0 0 4px
     <button class="btn btn-primary" onclick="ownerLogin()">Continue</button>
   </section>
 
-  <!-- ============ VIEW: MANAGER BRANCH SELECT ============ -->
+  <!-- ============ BRANCH SELECT ============ -->
   <section id="view-branch" class="view">
     <div class="topbar">
       <button class="back" onclick="go('view-home')">←</button>
@@ -256,7 +249,7 @@ h1,h2,h3{font-family:"Poppins","Inter",sans-serif;font-weight:700;margin:0 0 4px
     </div>
   </section>
 
-  <!-- ============ VIEW: MANAGER HOME (Sales Today / Stock Arrival) ============ -->
+  <!-- ============ MANAGER HOME ============ -->
   <section id="view-manager-home" class="view">
     <div class="topbar">
       <button class="back" onclick="go('view-branch')">←</button>
@@ -277,13 +270,16 @@ h1,h2,h3{font-family:"Poppins","Inter",sans-serif;font-weight:700;margin:0 0 4px
     </div>
   </section>
 
-  <!-- ============ VIEW: STOCK ARRIVAL (incoming stock / batch) ============ -->
+  <!-- ============ STOCK ARRIVAL ============ -->
   <section id="view-stock-arrival" class="view">
     <div class="topbar">
       <button class="back" onclick="go('view-manager-home')">←</button>
-      <div class="titles"><h1>Stock Arrival</h1><div class="sub" id="sa-branch-sub">Branch</div></div>
+      <div class="titles"><h1 id="sa-title">Stock Arrival</h1><div class="sub" id="sa-branch-sub">Branch</div></div>
     </div>
 
+    <div class="field"><label>Stock Arrival Date</label>
+      <input type="date" id="sa-arrival-date">
+    </div>
     <div class="field"><label>Wholesaler Name</label>
       <input type="text" id="sa-wholesaler-name" placeholder="e.g. Ramesh Traders">
     </div>
@@ -318,9 +314,10 @@ h1,h2,h3{font-family:"Poppins","Inter",sans-serif;font-weight:700;margin:0 0 4px
     </div>
 
     <button class="btn btn-primary" id="sa-save-btn" onclick="saveStockArrival()">Save Stock Arrival</button>
+    <button class="btn btn-ghost" id="sa-cancel-edit-btn" style="display:none;" onclick="openStockArrival()">Cancel Edit</button>
   </section>
 
-  <!-- ============ VIEW: SALES TODAY (batch-linked, single page) ============ -->
+  <!-- ============ SALES TODAY ============ -->
   <section id="view-sales-entry" class="view">
     <div class="topbar">
       <button class="back" onclick="go('view-manager-home')">←</button>
@@ -357,7 +354,7 @@ h1,h2,h3{font-family:"Poppins","Inter",sans-serif;font-weight:700;margin:0 0 4px
     <p class="small-note">Leave a product's fields blank if nothing sold there today.</p>
   </section>
 
-  <!-- ============ VIEW: OWNER SETTINGS (pricing) ============ -->
+  <!-- ============ OWNER SETTINGS (pricing) ============ -->
   <section id="view-owner-settings" class="view">
     <div class="topbar">
       <button class="back" onclick="go('view-dashboard')">←</button>
@@ -371,9 +368,11 @@ h1,h2,h3{font-family:"Poppins","Inter",sans-serif;font-weight:700;margin:0 0 4px
     </div>
     <button class="btn btn-primary" onclick="savePricing()">Save Price</button>
     <p class="small-note" id="price-current-note"></p>
+    <button class="btn btn-ghost" style="margin-top:24px;" onclick="exportAllData()">⬇️ Download Full Data Backup (JSON)</button>
+    <p class="small-note">Saves every stock arrival, sale, and price setting to one file on your device.</p>
   </section>
 
-  <!-- ============ VIEW: OWNER CHATBOT ============ -->
+  <!-- ============ CHATBOT ============ -->
   <section id="view-chatbot" class="view">
     <div class="topbar">
       <button class="back" onclick="go('view-dashboard')">←</button>
@@ -387,145 +386,77 @@ h1,h2,h3{font-family:"Poppins","Inter",sans-serif;font-weight:700;margin:0 0 4px
     <p class="small-note">Try: "stock in Gudiwada", "sold today", "batch LOT-45", "low stock"</p>
   </section>
 
-  <!-- ============ VIEW: FULL STOCK ENTRY (new single-page manager flow) ============ -->
-
-  <section id="view-full-entry" class="view">
-    <div class="topbar">
-      <button class="back" onclick="go('view-branch')">←</button>
-      <div class="titles"><h1 id="full-entry-branch">Branch</h1><div class="sub">Update today's stock — all products</div></div>
-    </div>
-
-    <div class="field"><label>Update Type</label>
-      <div class="pill-row" id="full-update-type-row"></div>
-    </div>
-
-    <!-- ONIONS -->
-    <div class="accordion" id="acc-onions">
-      <button class="accordion-header" onclick="toggleAccordion('acc-onions')">
-        <div class="icon icon-onion">🧅</div>
-        <div><div class="label">Onions</div><div class="meta">Small / Medium / Large</div></div>
-        <div class="chev">›</div>
-      </button>
-      <div class="accordion-body"><div class="accordion-body-inner" id="onion-fields"></div></div>
-    </div>
-
-    <!-- GARLIC -->
-    <div class="accordion" id="acc-garlic">
-      <button class="accordion-header" onclick="toggleAccordion('acc-garlic')">
-        <div class="icon icon-garlic">🧄</div>
-        <div><div class="label">Garlic</div><div class="meta">Bags, kgs/tons, remarks</div></div>
-        <div class="chev">›</div>
-      </button>
-      <div class="accordion-body"><div class="accordion-body-inner" id="garlic-fields"></div></div>
-    </div>
-
-    <!-- TAMARIND -->
-    <div class="accordion" id="acc-tamarind">
-      <button class="accordion-header" onclick="toggleAccordion('acc-tamarind')">
-        <div class="icon icon-tamarind">🍂</div>
-        <div><div class="label">Tamarind</div><div class="meta">Bags, kgs/tons, remarks</div></div>
-        <div class="chev">›</div>
-      </button>
-      <div class="accordion-body"><div class="accordion-body-inner" id="tamarind-fields"></div></div>
-    </div>
-
-    <button class="btn btn-primary" id="full-save-btn" onclick="saveFullEntry()" style="margin-top:8px;">Save Full Stock Update</button>
-    <p class="small-note">Leave a product's fields blank if there's nothing to update for it right now.</p>
-  </section>
-
-  <!-- ============ VIEW: PRODUCT SELECT (legacy — no longer in the main flow) ============ -->
-  <section id="view-product" class="view">
-    <div class="topbar">
-      <button class="back" onclick="go('view-branch')">←</button>
-      <div class="titles"><h1 id="product-branch-title">Branch</h1><div class="sub">Select product to update</div></div>
-    </div>
-    <div class="card-grid" id="product-list"></div>
-  </section>
-
-  <!-- ============ VIEW: VARIETY SELECT (onions) ============ -->
-  <section id="view-variety" class="view">
-    <div class="topbar">
-      <button class="back" onclick="go('view-product')">←</button>
-      <div class="titles"><h1>Onions</h1><div class="sub">Select variety</div></div>
-    </div>
-    <div class="card-grid" id="variety-list"></div>
-  </section>
-
-  <!-- ============ VIEW: STOCK ENTRY ============ -->
-  <section id="view-entry" class="view">
-    <div class="topbar">
-      <button class="back" id="entry-back">←</button>
-      <div class="titles"><h1 id="entry-title">Stock Entry</h1><div class="sub" id="entry-sub">Branch</div></div>
-    </div>
-    <div class="field"><label>Update Type</label>
-      <div class="pill-row" id="update-type-row"></div>
-    </div>
-    <div class="field"><label>Bags in Stock</label>
-      <input type="number" id="bags" min="0" step="1" inputmode="numeric" placeholder="e.g. 100">
-    </div>
-    <div class="field"><label>Kgs in Stock</label>
-      <input type="number" id="kgs" min="0" step="0.1" inputmode="decimal" placeholder="e.g. 5000">
-    </div>
-    <div class="field"><label>Notes (optional)</label>
-      <textarea id="notes" placeholder="Any remarks..."></textarea>
-    </div>
-    <button class="btn btn-primary" id="save-btn" onclick="saveEntry()">Save Update</button>
-  </section>
-
-  <!-- ============ VIEW: SUMMARY / WHATSAPP ============ -->
+  <!-- ============ SUMMARY / WHATSAPP ============ -->
   <section id="view-summary" class="view">
     <div class="center" style="margin-top:20px;">
       <div class="checkmark">✓</div>
-      <h1>Update Saved</h1>
+      <h1>Saved</h1>
       <p class="small-note" style="margin-bottom:20px;">Here's what was recorded</p>
     </div>
     <div class="summary-box" id="summary-text">Loading...</div>
     <button class="btn btn-whatsapp" id="wa-btn">Share to WhatsApp</button>
-    <button class="btn btn-primary" onclick="addAnother()">Add Another Update</button>
+    <button class="btn btn-primary" id="summary-primary-btn">Add Another</button>
     <button class="btn btn-ghost" onclick="goHome()">Back to Home</button>
   </section>
 
-  <!-- ============ VIEW: OWNER DASHBOARD ============ -->
+  <!-- ============ OWNER DASHBOARD ============ -->
   <section id="view-dashboard" class="view">
     <div class="topbar">
       <button class="back" onclick="goHome()">←</button>
       <div class="titles"><h1>Owner Dashboard</h1><div class="sub" id="today-label">Live Stock</div></div>
     </div>
     <div class="price-banner" id="dash-price-banner" style="display:none;"></div>
-    <div class="pill-row" style="margin-bottom:18px;">
+    <div class="pill-row" style="margin-bottom:12px;">
       <div class="pill" style="flex:1;" onclick="openHistory()">📖 History</div>
-      <div class="pill" style="flex:1;" onclick="go('view-chatbot'); initChatbot();">💬 Ask KR Onions</div>
-      <div class="pill" style="flex:1;" onclick="openOwnerSettings()">⚙️ Price Settings</div>
+      <div class="pill" style="flex:1;" onclick="go('view-chatbot'); initChatbot();">💬 Ask</div>
+      <div class="pill" style="flex:1;" onclick="openOwnerSettings()">⚙️ Price</div>
     </div>
+    <div class="debug-toggle" onclick="toggleDebug()">🔍 Toggle Debug Info</div>
+    <div class="debug-box" id="debug-box" style="display:none;">Loading...</div>
     <div id="branch-summaries">Loading stock...</div>
   </section>
 
-  <!-- ============ VIEW: HISTORY ============ -->
+  <!-- ============ HISTORY ============ -->
   <section id="view-history" class="view">
     <div class="topbar">
       <button class="back" onclick="go('view-dashboard')">←</button>
-      <div class="titles"><h1>Stock History</h1><div class="sub">Digital stock book</div></div>
+      <div class="titles"><h1>Stock History</h1><div class="sub">Arrivals &amp; sales by date</div></div>
     </div>
     <div class="filter-bar">
-      <div class="field full"><label>Date</label><input type="date" id="f-date"></div>
-      <div class="field"><label>Branch</label><select id="f-branch"><option value="">All Branches</option></select></div>
-      <div class="field"><label>Product</label><select id="f-product"><option value="">All Products</option></select></div>
-      <div class="field full"><label>Update Type</label>
-        <select id="f-updatetype"><option value="">Both (Before Lunch &amp; Closing)</option></select>
-      </div>
+      <div class="field full"><label>Date</label><input type="date" id="h-date"></div>
+      <div class="field"><label>Branch</label><select id="h-branch"><option value="">All Branches</option></select></div>
+      <div class="field"><label>Product</label><select id="h-product"><option value="">All Products</option></select></div>
     </div>
-    <div id="history-results">Loading...</div>
+    <div id="h-summary" style="margin-bottom:10px;"></div>
+
+    <h3 style="color:var(--maroon-dk);margin-bottom:10px;">🚚 Stock Arrivals</h3>
+    <div id="h-arrivals">Loading...</div>
+
+    <h3 style="color:var(--maroon-dk);margin:20px 0 10px;">🧾 Sales</h3>
+    <div id="h-sales">Loading...</div>
+  </section>
+
+  <!-- ============ EDIT SALE (compact) ============ -->
+  <section id="view-edit-sale" class="view">
+    <div class="topbar">
+      <button class="back" onclick="go('view-history')">←</button>
+      <div class="titles"><h1>Edit Sale</h1><div class="sub" id="es-context">Batch</div></div>
+    </div>
+    <div class="field"><label>Bags Sold</label><input type="number" id="es-bags" min="0" step="1"></div>
+    <div class="field"><label>Kgs Sold</label><input type="number" id="es-kgs" min="0" step="0.1"></div>
+    <div class="field"><label>Remarks</label><textarea id="es-notes"></textarea></div>
+    <button class="btn btn-primary" onclick="saveEditSale()">Save Changes</button>
+    <button class="btn btn-ghost" onclick="go('view-history')">Cancel</button>
   </section>
 
 </div>
 
 <script>
 /* ======================================================
-   KR ONIONS STOCK UPDATE — SINGLE FILE APP
+   KR ONIONS STOCK UPDATE — SINGLE FILE APP (v3)
    Edit BRANCHES / OWNER_PIN / WORKER_URL below as needed.
    ====================================================== */
 
-// ---- EDIT THESE -----------------------------------------------
 const BRANCHES = [
   { id:"branch1", name:"Hanuman Junction", pin:"1111" },
   { id:"branch2", name:"Gudiwada",         pin:"2222" },
@@ -536,7 +467,6 @@ const OWNER_PIN = "9999";
 // Paste your Cloudflare Worker URL here (no trailing slash):
 const WORKER_URL = "https://kr-onions.boddedahimateja.workers.dev";
 
-// -----------------------------------------------------------------
 const PRODUCTS = [
   { id:"onions",   name:"Onions",   hasVariety:true,  icon:"🧅", iconClass:"icon-onion" },
   { id:"garlic",   name:"Garlic",   hasVariety:false, icon:"🧄", iconClass:"icon-garlic" },
@@ -547,12 +477,7 @@ const ONION_VARIETIES = [
   { id:"medium", name:"Medium Onions" },
   { id:"large",  name:"Large Onions" }
 ];
-const UPDATE_TYPES = [
-  { id:"before_lunch", name:"Before Lunch" },
-  { id:"closing",      name:"Closing Stock" }
-];
 
-// ---- State (in-memory, resets on reload — simplest for v1) -------
 let state = {};
 let dashboardTimer = null;
 
@@ -562,13 +487,8 @@ function go(viewId) {
   document.getElementById(viewId).classList.add("active");
   window.scrollTo(0, 0);
 }
-function goHome() {
-  state = {};
-  stopDashboardPolling();
-  go("view-home");
-}
+function goHome() { state = {}; stopDashboardPolling(); go("view-home"); }
 
-// ---- Toast --------------------------------------------------------
 function showBanner(msg, type) {
   let el = document.getElementById("kr-banner");
   if (!el) { el = document.createElement("div"); el.id = "kr-banner"; document.body.appendChild(el); }
@@ -578,7 +498,6 @@ function showBanner(msg, type) {
   el._t = setTimeout(() => el.classList.remove("show"), 3200);
 }
 
-// ---- Date / number helpers -----------------------------------------
 function dateKeyFor(d = new Date()) {
   const y=d.getFullYear(), m=String(d.getMonth()+1).padStart(2,"0"), day=String(d.getDate()).padStart(2,"0");
   return `${y}-${m}-${day}`;
@@ -587,7 +506,6 @@ function prettyDate(d = new Date()) {
   return d.toLocaleDateString("en-IN",{day:"2-digit",month:"long",year:"numeric"});
 }
 function fmtNum(n){ return Number(n||0).toLocaleString("en-IN"); }
-function updateTypeLabel(id){ const u=UPDATE_TYPES.find(u=>u.id===id); return u?u.name:id; }
 function lineLabel(r){
   if (r.productType === "onions") { const v=ONION_VARIETIES.find(v=>v.id===r.variety); return v?v.name:"Onions"; }
   const p=PRODUCTS.find(p=>p.id===r.productType); return p?p.name:r.productType;
@@ -639,29 +557,47 @@ function branchLogin() {
   openManagerHome();
 }
 
-// ---- Manager Home (Sales Today / Stock Arrival) ----------------------------
 function openManagerHome() {
   document.getElementById("mh-branch-title").textContent = "KR Onions - " + state.branchName;
   loadPriceBanner("mh-price-banner");
   go("view-manager-home");
 }
 
-// ---- Stock Arrival (incoming stock / batch creation) ------------------------
-function openStockArrival() {
+// ============================================================
+// STOCK ARRIVAL (create + edit)
+// ============================================================
+function openStockArrival(editRecord) {
   document.getElementById("sa-branch-sub").textContent = "KR Onions - " + state.branchName;
-  ["sa-wholesaler-name","sa-wholesaler-id","sa-lot-number","sa-bags","sa-qty","sa-price","sa-notes"]
-    .forEach(id => document.getElementById(id).value = "");
-  document.getElementById("sa-unit").value = "kg";
+  document.getElementById("sa-title").textContent = editRecord ? "Edit Stock Arrival" : "Stock Arrival";
+  document.getElementById("sa-save-btn").textContent = editRecord ? "Update Stock Arrival" : "Save Stock Arrival";
+  document.getElementById("sa-cancel-edit-btn").style.display = editRecord ? "block" : "none";
+  state.editIncomingKey = editRecord ? editRecord._key : null;
+  state.editIncomingBatchId = editRecord ? editRecord.batchId : null;
 
-  state.saProduct = null; state.saVariety = null;
+  document.getElementById("sa-arrival-date").value = editRecord ? editRecord.arrivalDate : dateKeyFor();
+  document.getElementById("sa-wholesaler-name").value = editRecord ? editRecord.wholesalerName : "";
+  document.getElementById("sa-wholesaler-id").value = editRecord ? editRecord.wholesalerId : "";
+  document.getElementById("sa-lot-number").value = editRecord ? editRecord.lotNumber : "";
+  document.getElementById("sa-bags").value = editRecord ? editRecord.bags : "";
+  document.getElementById("sa-qty").value = editRecord ? editRecord.kgs : "";
+  document.getElementById("sa-unit").value = "kg"; // stored kgs are already normalized to kg
+  document.getElementById("sa-price").value = editRecord && editRecord.purchasePrice != null ? editRecord.purchasePrice : "";
+  document.getElementById("sa-notes").value = editRecord ? (editRecord.notes || "") : "";
+
+  // Lot number is locked once created — sales already reference the batch by id.
+  document.getElementById("sa-lot-number").disabled = !!editRecord;
+
+  state.saProduct = editRecord ? editRecord.productType : null;
+  state.saVariety = editRecord ? editRecord.variety : null;
 
   const prow = document.getElementById("sa-product-row");
   prow.innerHTML = "";
   PRODUCTS.forEach(p => {
     const pill = document.createElement("div");
-    pill.className = "pill";
+    pill.className = "pill" + (state.saProduct === p.id ? " selected" : "");
     pill.textContent = p.name;
     pill.onclick = () => {
+      if (editRecord) return; // product/variety locked when editing
       [...prow.children].forEach(c => c.classList.remove("selected"));
       pill.classList.add("selected");
       state.saProduct = p.id;
@@ -677,7 +613,7 @@ function openStockArrival() {
     vrow.innerHTML = "";
     ONION_VARIETIES.forEach(v => {
       const pill = document.createElement("div");
-      pill.className = "pill";
+      pill.className = "pill" + (state.saVariety === v.id ? " selected" : "");
       pill.textContent = v.name;
       pill.onclick = () => {
         [...vrow.children].forEach(c => c.classList.remove("selected"));
@@ -688,10 +624,18 @@ function openStockArrival() {
     });
   }
 
+  if (state.saProduct === "onions") {
+    document.getElementById("sa-variety-field").style.display = "block";
+    buildVarietyRow();
+  } else {
+    document.getElementById("sa-variety-field").style.display = "none";
+  }
+
   go("view-stock-arrival");
 }
 
 async function saveStockArrival() {
+  const arrivalDate = document.getElementById("sa-arrival-date").value;
   const wholesalerName = document.getElementById("sa-wholesaler-name").value.trim();
   const wholesalerId = document.getElementById("sa-wholesaler-id").value.trim();
   const lotNumber = document.getElementById("sa-lot-number").value.trim();
@@ -701,6 +645,7 @@ async function saveStockArrival() {
   const price = document.getElementById("sa-price").value;
   const notes = document.getElementById("sa-notes").value.trim();
 
+  if (!arrivalDate) { showBanner("Select the stock arrival date.", "error"); return; }
   if (!wholesalerName) { showBanner("Enter the wholesaler's name.", "error"); return; }
   if (!lotNumber) { showBanner("Enter a batch / lot number.", "error"); return; }
   if (!state.saProduct) { showBanner("Select a product.", "error"); return; }
@@ -713,30 +658,41 @@ async function saveStockArrival() {
   saveBtn.disabled = true; saveBtn.textContent = "Saving...";
 
   try {
-    const res = await fetch(`${WORKER_URL}/api/incoming`, {
-      method: "POST", headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({
-        branchId: state.branchId, branchName: state.branchName,
-        wholesalerName, wholesalerId, lotNumber,
-        productType: state.saProduct, variety: state.saVariety || "none",
-        bags: Number(bags), kgs, unit,
-        purchasePrice: price !== "" ? Number(price) : null,
-        notes
-      })
-    });
-    const data = await res.json().catch(() => ({}));
+    let res, data;
+    if (state.editIncomingKey) {
+      res = await fetch(`${WORKER_URL}/api/incoming`, {
+        method: "PATCH", headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ key: state.editIncomingKey, arrivalDate, wholesalerName, wholesalerId, bags: Number(bags), kgs, unit, purchasePrice: price !== "" ? Number(price) : null, notes })
+      });
+    } else {
+      res = await fetch(`${WORKER_URL}/api/incoming`, {
+        method: "POST", headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          branchId: state.branchId, branchName: state.branchName,
+          wholesalerName, wholesalerId, lotNumber, arrivalDate,
+          productType: state.saProduct, variety: state.saVariety || "none",
+          bags: Number(bags), kgs, unit,
+          purchasePrice: price !== "" ? Number(price) : null,
+          notes
+        })
+      });
+    }
+    data = await res.json().catch(() => ({}));
     if (!res.ok) throw new Error(data.error || `Save failed (${res.status})`);
-    showBanner(`Stock arrival saved — Batch ${data.batchId}`, "success");
+    showBanner(state.editIncomingKey ? "Stock arrival updated!" : `Stock arrival saved — Batch ${data.batchId}`, "success");
+    state.editIncomingKey = null;
     setTimeout(() => openManagerHome(), 500);
   } catch (err) {
     console.error(err);
-    showBanner("Could not save. Check Worker URL / internet connection.", "error");
+    showBanner(err.message || "Could not save. Check Worker URL / internet connection.", "error");
   } finally {
-    saveBtn.disabled = false; saveBtn.textContent = "Save Stock Arrival";
+    saveBtn.disabled = false; saveBtn.textContent = state.editIncomingKey ? "Update Stock Arrival" : "Save Stock Arrival";
   }
 }
 
-// ---- Sales Today (batch-linked, single page) --------------------------------
+// ============================================================
+// SALES TODAY
+// ============================================================
 async function openSalesEntry() {
   document.getElementById("se-branch-title").textContent = "KR Onions - " + state.branchName;
   loadPriceBanner("se-price-banner");
@@ -756,7 +712,6 @@ async function openSalesEntry() {
     return;
   }
   state.saleLiveStock = liveStock.filter(b => b.bagsRemaining > 0);
-
   buildSaleFields();
   ["acc-sale-onions","acc-sale-garlic","acc-sale-tamarind"].forEach(id => document.getElementById(id).classList.remove("open"));
 }
@@ -774,8 +729,9 @@ function saleField(idPrefix, batches) {
       </select>
     </div>
     <div class="entry-mini-field"><label>Batch</label>
-      <select id="${idPrefix}-batch"><option value="">— Select wholesaler first —</option></select>
+      <select id="${idPrefix}-batch" onchange="onSaleBatchChange('${idPrefix}')"><option value="">— Select wholesaler first —</option></select>
     </div>
+    <div class="arrival-date-note" id="${idPrefix}-arrival-note" style="display:none;"></div>
     <div class="entry-mini-field"><label>Bags Sold</label>
       <input type="number" id="${idPrefix}-bagssold" min="0" step="1" inputmode="numeric" placeholder="e.g. 20"></div>
     <div class="entry-mini-field"><label>Kgs Sold</label>
@@ -791,6 +747,20 @@ function onSaleWholesalerChange(idPrefix) {
   batchSelect.innerHTML = batches.length
     ? batches.map(b => `<option value="${b.batchId}">${b.lotNumber} — ${fmtNum(b.bagsRemaining)} bags left</option>`).join("")
     : `<option value="">No batches for this wholesaler</option>`;
+  document.getElementById(`${idPrefix}-arrival-note`).style.display = "none";
+  onSaleBatchChange(idPrefix);
+}
+
+function onSaleBatchChange(idPrefix) {
+  const batchId = document.getElementById(`${idPrefix}-batch`).value;
+  const note = document.getElementById(`${idPrefix}-arrival-note`);
+  const batch = (state.saleBatchesByField[idPrefix] || []).find(b => b.batchId === batchId);
+  if (batch) {
+    note.textContent = `📅 Arrival Date: ${batch.arrivalDate}  ·  ${fmtNum(batch.bagsRemaining)} bags remaining`;
+    note.style.display = "block";
+  } else {
+    note.style.display = "none";
+  }
 }
 
 function buildSaleFields() {
@@ -817,20 +787,13 @@ function readSaleFields(idPrefix, productType, variety, label) {
   const batches = state.saleBatchesByField[idPrefix] || [];
   if (batches.length === 0) return { skip: true };
 
-  const wholesalerEl = document.getElementById(`${idPrefix}-wholesaler`);
-  const batchEl = document.getElementById(`${idPrefix}-batch`);
-  const bagsEl = document.getElementById(`${idPrefix}-bagssold`);
-  const kgsEl = document.getElementById(`${idPrefix}-kgssold`);
-  const notesEl = document.getElementById(`${idPrefix}-notes`);
-
-  const wholesaler = wholesalerEl.value;
-  const batchId = batchEl.value;
-  const bagsSold = bagsEl.value.trim();
-  const kgsSold = kgsEl.value.trim();
-  const notes = notesEl.value.trim();
+  const wholesaler = document.getElementById(`${idPrefix}-wholesaler`).value;
+  const batchId = document.getElementById(`${idPrefix}-batch`).value;
+  const bagsSold = document.getElementById(`${idPrefix}-bagssold`).value.trim();
+  const kgsSold = document.getElementById(`${idPrefix}-kgssold`).value.trim();
+  const notes = document.getElementById(`${idPrefix}-notes`).value.trim();
 
   if (!wholesaler && bagsSold === "" && kgsSold === "") return { skip: true };
-
   if (!wholesaler || !batchId) return { error: `${label}: select a wholesaler and batch.` };
   if (bagsSold === "" || kgsSold === "") return { error: `${label}: enter both bags sold and kgs sold.` };
   if (isNaN(bagsSold) || isNaN(kgsSold) || Number(bagsSold) < 0 || Number(kgsSold) < 0) {
@@ -904,13 +867,7 @@ function openSalesSummary(records) {
   const garlicRecord = records.find(r => r.productType === "garlic");
   const tamarindRecord = records.find(r => r.productType === "tamarind");
 
-  const lines = [
-    "KR Onions — Sales Update",
-    `Branch: ${first.branchName}`,
-    `Date: ${first.dateLabel}`,
-    `Time: ${first.timeLabel}`,
-    ""
-  ];
+  const lines = ["KR Onions — Sales Update", `Branch: ${first.branchName}`, `Date: ${first.dateLabel}`, `Time: ${first.timeLabel}`, ""];
   if (onionRecords.length > 0) {
     const totalBags = onionRecords.reduce((s,r)=>s+Number(r.bagsSold||0),0);
     lines.push(`Onions Total Bags Sold: ${fmtNum(totalBags)}`);
@@ -924,340 +881,22 @@ function openSalesSummary(records) {
   const msg = lines.join("\n");
   document.getElementById("summary-text").textContent = msg;
   document.getElementById("wa-btn").onclick = () => window.open(`https://wa.me/?text=${encodeURIComponent(msg)}`, "_blank");
-  const addAnotherBtn = document.querySelector("#view-summary .btn-primary");
-  addAnotherBtn.onclick = () => openManagerHome();
+  const btn = document.getElementById("summary-primary-btn");
+  btn.textContent = "Add Another";
+  btn.onclick = () => openManagerHome();
   go("view-summary");
 }
 
-// ---- NEW: single-page full stock entry (Onions/Garlic/Tamarind together) -----
-function toggleAccordion(id) {
-  document.getElementById(id).classList.toggle("open");
-}
-
-function miniField(idPrefix, kind) {
-  if (kind === "notes") {
-    return `<div class="entry-mini-field"><label>Remarks (optional)</label>
-      <textarea id="${idPrefix}-notes" placeholder="Any remarks..."></textarea></div>`;
-  }
-  return `<div class="entry-mini-field"><label>Bags</label>
-      <input type="number" id="${idPrefix}-bags" min="0" step="1" inputmode="numeric" placeholder="e.g. 100"></div>
-    <div class="entry-mini-field"><label>Kgs or Tons</label>
-      <div class="qty-row">
-        <input type="number" id="${idPrefix}-qty" min="0" step="0.1" inputmode="decimal" placeholder="e.g. 5000">
-        <select id="${idPrefix}-unit"><option value="kg">Kg</option><option value="ton">Tons</option></select>
-      </div>
-    </div>`;
-}
-
-function openFullEntry() {
-  document.getElementById("full-entry-branch").textContent = "KR Onions - " + state.branchName;
-
-  // Update type pills (applies to the whole submission)
-  const row = document.getElementById("full-update-type-row");
-  row.innerHTML = "";
-  state.fullSelectedType = null;
-  UPDATE_TYPES.forEach(u => {
-    const pill = document.createElement("div");
-    pill.className = "pill";
-    pill.textContent = u.name;
-    pill.onclick = () => {
-      [...row.children].forEach(c => c.classList.remove("selected"));
-      pill.classList.add("selected");
-      state.fullSelectedType = u.id;
-    };
-    row.appendChild(pill);
-  });
-
-  // Onions: three variety blocks inside one accordion
-  document.getElementById("onion-fields").innerHTML = ONION_VARIETIES.map(v => `
-    <div class="variety-block">
-      <div class="variety-name">${v.name}</div>
-      ${miniField("onion-" + v.id, "qty")}
-      ${miniField("onion-" + v.id, "notes")}
-    </div>`).join("");
-
-  // Garlic / Tamarind: single field group each
-  document.getElementById("garlic-fields").innerHTML = miniField("garlic", "qty") + miniField("garlic", "notes");
-  document.getElementById("tamarind-fields").innerHTML = miniField("tamarind", "qty") + miniField("tamarind", "notes");
-
-  // Reset all inputs and collapse accordions
-  ["acc-onions", "acc-garlic", "acc-tamarind"].forEach(id => document.getElementById(id).classList.remove("open"));
-
-  go("view-full-entry");
-}
-
-// Reads one product/variety's fields; returns { skip: true } if left blank,
-// { error: "..." } if invalid, or { skip: false, payload } if ready to save.
-function readEntryFields(idPrefix, productType, variety, varietyLabel) {
-  const bagsEl = document.getElementById(`${idPrefix}-bags`);
-  const qtyEl = document.getElementById(`${idPrefix}-qty`);
-  const unitEl = document.getElementById(`${idPrefix}-unit`);
-  const notesEl = document.getElementById(`${idPrefix}-notes`);
-
-  const bags = bagsEl.value.trim();
-  const qty = qtyEl.value.trim();
-  const notes = notesEl.value.trim();
-
-  if (bags === "" && qty === "") return { skip: true };
-
-  if (bags === "" || qty === "") {
-    return { error: `${varietyLabel}: enter both bags and kgs/tons, or leave both blank.` };
-  }
-  if (isNaN(bags) || isNaN(qty)) {
-    return { error: `${varietyLabel}: bags and kgs/tons must be numbers.` };
-  }
-  if (Number(bags) < 0 || Number(qty) < 0) {
-    return { error: `${varietyLabel}: bags and kgs/tons cannot be negative.` };
-  }
-
-  const unit = unitEl.value;
-  const kgs = unit === "ton" ? Number(qty) * 1000 : Number(qty);
-
-  return {
-    skip: false,
-    payload: {
-      branchId: state.branchId, branchName: state.branchName,
-      productType, variety: variety || "none",
-      bags: Number(bags), kgs, unit, qtyEntered: Number(qty),
-      updateType: state.fullSelectedType, managerName: state.managerName, notes
-    }
-  };
-}
-
-async function saveFullEntry() {
-  if (!state.fullSelectedType) { showBanner("Please select an update type.", "error"); return; }
-
-  const toSave = [];
-  let errorMsg = null;
-
-  ONION_VARIETIES.forEach(v => {
-    const r = readEntryFields("onion-" + v.id, "onions", v.id, v.name);
-    if (r.error && !errorMsg) errorMsg = r.error;
-    if (!r.skip && r.payload) toSave.push(r.payload);
-  });
-  const garlicR = readEntryFields("garlic", "garlic", "none", "Garlic");
-  if (garlicR.error && !errorMsg) errorMsg = garlicR.error;
-  if (!garlicR.skip && garlicR.payload) toSave.push(garlicR.payload);
-
-  const tamarindR = readEntryFields("tamarind", "tamarind", "none", "Tamarind");
-  if (tamarindR.error && !errorMsg) errorMsg = tamarindR.error;
-  if (!tamarindR.skip && tamarindR.payload) toSave.push(tamarindR.payload);
-
-  if (errorMsg) { showBanner(errorMsg, "error"); return; }
-  if (toSave.length === 0) { showBanner("Enter at least one product's stock before saving.", "error"); return; }
-
-  const saveBtn = document.getElementById("full-save-btn");
-  saveBtn.disabled = true; saveBtn.textContent = "Saving...";
-
-  const saved = [];
-  try {
-    for (const payload of toSave) {
-      const res = await fetch(`${WORKER_URL}/api/records`, {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(payload)
-      });
-      const data = await res.json().catch(() => ({}));
-      if (!res.ok) throw new Error(data.error || `Save failed (${res.status})`);
-      saved.push(data);
-    }
-    showBanner("Full stock update saved!", "success");
-    setTimeout(() => openCombinedSummary(saved), 400);
-  } catch (err) {
-    console.error(err);
-    showBanner(`Saved ${saved.length} of ${toSave.length} items — then: ${err.message}`, "error");
-  } finally {
-    saveBtn.disabled = false; saveBtn.textContent = "Save Full Stock Update";
-  }
-}
-
-function openCombinedSummary(records) {
-  const first = records[0];
-  const onionRecords = records.filter(r => r.productType === "onions");
-  const garlicRecord = records.find(r => r.productType === "garlic");
-  const tamarindRecord = records.find(r => r.productType === "tamarind");
-
-  const lines = [
-    "KR Onions Stock Update",
-    `Branch: ${first.branchName}`,
-    `Date: ${first.dateLabel}`,
-    `Time: ${first.timeLabel}`,
-    `Update Type: ${updateTypeLabel(first.updateType)}`,
-    ""
-  ];
-
-  if (onionRecords.length > 0) {
-    const onionTotalBags = onionRecords.reduce((s, r) => s + Number(r.bags || 0), 0);
-    lines.push(`Onions Total Bags: ${fmtNum(onionTotalBags)}`);
-    onionRecords.forEach(r => lines.push(`- ${lineLabel(r)}: ${fmtNum(r.bags)} bags, ${fmtNum(r.kgs)} kgs`));
-    lines.push("");
-  }
-  if (garlicRecord) {
-    lines.push(`Garlic: ${fmtNum(garlicRecord.bags)} bags, ${fmtNum(garlicRecord.kgs)} kgs`);
-    lines.push("");
-  }
-  if (tamarindRecord) {
-    lines.push(`Tamarind: ${fmtNum(tamarindRecord.bags)} bags, ${fmtNum(tamarindRecord.kgs)} kgs`);
-    lines.push("");
-  }
-  lines.push(`Updated by: ${first.managerName}`);
-
-  const msg = lines.join("\n");
-  document.getElementById("summary-text").textContent = msg;
-  document.getElementById("wa-btn").onclick = () => {
-    window.open(`https://wa.me/?text=${encodeURIComponent(msg)}`, "_blank");
-  };
-  // "Add Another Update" from the combined flow should return to the same branch's full entry screen.
-  const addAnotherBtn = document.querySelector("#view-summary .btn-primary");
-  addAnotherBtn.onclick = () => openFullEntry();
-  go("view-summary");
-}
-
-function openProductSelect() {
-  document.getElementById("product-branch-title").textContent = "KR Onions - " + state.branchName;
-  const list = document.getElementById("product-list");
-  list.innerHTML = "";
-  PRODUCTS.forEach(p => {
-    const card = document.createElement("button");
-    card.className = "tap-card";
-    card.innerHTML = `
-      <div class="icon ${p.iconClass}">${p.icon}</div>
-      <div><div class="label">${p.name}</div>
-      <div class="meta">${p.hasVariety ? "Small / Medium / Large" : "Update bags &amp; kgs"}</div></div>
-      <div class="chev">›</div>`;
-    card.onclick = () => {
-      state.product = p.id; state.productName = p.name;
-      state.variety = null; state.varietyName = null;
-      if (p.hasVariety) openVarietySelect(); else openEntry();
-    };
-    list.appendChild(card);
-  });
-  go("view-product");
-}
-
-function openVarietySelect() {
-  const list = document.getElementById("variety-list");
-  list.innerHTML = "";
-  ONION_VARIETIES.forEach(v => {
-    const card = document.createElement("button");
-    card.className = "tap-card";
-    card.innerHTML = `
-      <div class="icon icon-onion">🧅</div>
-      <div><div class="label">${v.name}</div><div class="meta">Update bags &amp; kgs</div></div>
-      <div class="chev">›</div>`;
-    card.onclick = () => { state.variety = v.id; state.varietyName = v.name; openEntry(); };
-    list.appendChild(card);
-  });
-  go("view-variety");
-}
-
-function openEntry() {
-  document.getElementById("entry-title").textContent = state.varietyName || state.productName;
-  document.getElementById("entry-sub").textContent = "KR Onions - " + state.branchName;
-  document.getElementById("bags").value = "";
-  document.getElementById("kgs").value = "";
-  document.getElementById("notes").value = "";
-  document.getElementById("entry-back").onclick = () => go(state.variety ? "view-variety" : "view-product");
-
-  const row = document.getElementById("update-type-row");
-  row.innerHTML = "";
-  state.selectedType = null;
-  UPDATE_TYPES.forEach(u => {
-    const pill = document.createElement("div");
-    pill.className = "pill";
-    pill.textContent = u.name;
-    pill.onclick = () => {
-      [...row.children].forEach(c => c.classList.remove("selected"));
-      pill.classList.add("selected");
-      state.selectedType = u.id;
-    };
-    row.appendChild(pill);
-  });
-  go("view-entry");
-}
-
-async function saveEntry() {
-  const bags = document.getElementById("bags").value;
-  const kgs = document.getElementById("kgs").value;
-  const notes = document.getElementById("notes").value.trim();
-  const saveBtn = document.getElementById("save-btn");
-
-  if (!state.selectedType) { showBanner("Please select an update type.", "error"); return; }
-  if (bags === "" || kgs === "") { showBanner("Bags and Kgs cannot be empty.", "error"); return; }
-  if (isNaN(bags) || isNaN(kgs)) { showBanner("Bags and Kgs must be numbers.", "error"); return; }
-  if (Number(bags) < 0 || Number(kgs) < 0) { showBanner("Bags and Kgs cannot be negative.", "error"); return; }
-
-  saveBtn.disabled = true; saveBtn.textContent = "Saving...";
-
-  const payload = {
-    branchId: state.branchId, branchName: state.branchName,
-    productType: state.product, variety: state.variety || "none",
-    bags: Number(bags), kgs: Number(kgs),
-    updateType: state.selectedType, managerName: state.managerName, notes
-  };
-
-  try {
-    const res = await fetch(`${WORKER_URL}/api/records`, {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(payload)
-    });
-    const data = await res.json().catch(() => ({}));
-    if (!res.ok) throw new Error(data.error || `Save failed (${res.status})`);
-
-    state.lastRecord = data;
-    showBanner("Stock update saved!", "success");
-    setTimeout(() => openSummary(data), 400);
-  } catch (err) {
-    console.error(err);
-    showBanner("Could not save. Check Worker URL / internet connection.", "error");
-  } finally {
-    saveBtn.disabled = false; saveBtn.textContent = "Save Update";
-  }
-}
-
-function openSummary(record) {
-  let totalBags = Number(record.bags||0), totalKgs = Number(record.kgs||0);
-  const msg = [
-    "KR Onions Stock Update",
-    `Branch: ${record.branchName}`,
-    `Date: ${record.dateLabel}`,
-    `Time: ${record.timeLabel}`,
-    `Update Type: ${updateTypeLabel(record.updateType)}`,
-    "",
-    `Total Bags: ${fmtNum(totalBags)}`,
-    `Total Kgs: ${fmtNum(totalKgs)}`,
-    "",
-    "Breakdown:",
-    `- ${lineLabel(record)}: ${fmtNum(record.bags)} bags, ${fmtNum(record.kgs)} kgs`,
-    "",
-    `Updated by: ${record.managerName}`
-  ].join("\n");
-
-  document.getElementById("summary-text").textContent = msg;
-  document.getElementById("wa-btn").onclick = () => {
-    window.open(`https://wa.me/?text=${encodeURIComponent(msg)}`, "_blank");
-  };
-  go("view-summary");
-}
-
-function addAnother() {
-  state.product = null; state.productName = null;
-  state.variety = null; state.varietyName = null;
-  openProductSelect();
-}
-
-// ---- Owner dashboard (v2: batch-level, live-stock based) ----------------
+// ============================================================
+// OWNER DASHBOARD (v3: live-stock based, batch-level, debug info)
+// ============================================================
 function openDashboard() {
-  document.getElementById("today-label").textContent = "Live Stock (Incoming − Sales, updates every few seconds)";
+  document.getElementById("today-label").textContent = "Current Stock (Incoming − Sales, updates every few seconds)";
   go("view-dashboard");
   loadPriceBanner("dash-price-banner");
   pollDashboard();
 }
-
-function stopDashboardPolling() {
-  if (dashboardTimer) { clearInterval(dashboardTimer); dashboardTimer = null; }
-}
+function stopDashboardPolling() { if (dashboardTimer) { clearInterval(dashboardTimer); dashboardTimer = null; } }
 
 function pollDashboard() {
   stopDashboardPolling();
@@ -1266,6 +905,7 @@ function pollDashboard() {
     try {
       const [liveStock, sales] = await Promise.all([fetchLiveStock(), fetchSales()]);
       renderDashboard(liveStock, sales, container);
+      renderDebug(liveStock, sales);
     } catch (err) {
       console.error(err);
       container.innerHTML = `<div class="empty-state">Could not load stock.<br>Check your Worker URL / internet connection.</div>`;
@@ -1284,13 +924,19 @@ async function fetchLiveStock(filters = {}) {
   if (!res.ok) throw new Error(`Fetch failed (${res.status})`);
   return await res.json();
 }
-
 async function fetchSales(filters = {}) {
   const params = new URLSearchParams();
   if (filters.branch) params.set("branch", filters.branch);
   if (filters.date) params.set("date", filters.date);
-  if (filters.batchId) params.set("batchId", filters.batchId);
   const res = await fetch(`${WORKER_URL}/api/sales?${params.toString()}`);
+  if (!res.ok) throw new Error(`Fetch failed (${res.status})`);
+  return await res.json();
+}
+async function fetchIncoming(filters = {}) {
+  const params = new URLSearchParams();
+  if (filters.branch) params.set("branch", filters.branch);
+  if (filters.date) params.set("date", filters.date);
+  const res = await fetch(`${WORKER_URL}/api/incoming?${params.toString()}`);
   if (!res.ok) throw new Error(`Fetch failed (${res.status})`);
   return await res.json();
 }
@@ -1301,7 +947,6 @@ function renderDashboard(liveStock, sales, container) {
     container.innerHTML = `<div class="empty-state">No stock recorded yet.<br>Ask a branch manager to log a Stock Arrival.</div>`;
     return;
   }
-
   BRANCHES.forEach(branch => {
     const batches = liveStock.filter(b => b.branchId === branch.id);
     const branchSales = sales.filter(s => s.branchId === branch.id);
@@ -1309,22 +954,17 @@ function renderDashboard(liveStock, sales, container) {
     box.className = "branch-summary";
 
     if (batches.length === 0) {
-      box.innerHTML = `<div class="head"><h3>KR Onions - ${branch.name}</h3></div>
-        <div class="updated">No stock arrivals recorded yet</div>`;
+      box.innerHTML = `<div class="head"><h3>KR Onions - ${branch.name}</h3></div><div class="updated">No stock arrivals recorded yet</div>`;
       container.appendChild(box);
       return;
     }
 
-    // "Last updated" = most recent event of any kind (arrival or sale) for this branch.
-    const lastEventTimes = [...batches.map(b => b.createdAt), ...branchSales.map(s => s.createdAt)];
     const lastRow = [...batches, ...branchSales].sort((a,b)=>(b.createdAt||"").localeCompare(a.createdAt||""))[0];
-
     const onionBatches = batches.filter(b => b.productType === "onions");
     const garlicBatches = batches.filter(b => b.productType === "garlic");
     const tamarindBatches = batches.filter(b => b.productType === "tamarind");
 
     let sectionsHtml = "";
-
     if (onionBatches.length > 0) {
       const onionTotalBags = onionBatches.reduce((s,b)=>s+Number(b.bagsRemaining||0),0);
       sectionsHtml += `<div class="onions-total-line"><span>Onions Total Bags</span><span>${fmtNum(onionTotalBags)}</span></div>`;
@@ -1365,9 +1005,28 @@ function batchListHtml(batches) {
     .sort((a,b) => (b.bagsRemaining||0) - (a.bagsRemaining||0))
     .map(b => `
       <div class="batch-row">
-        <div><div class="who">${b.wholesalerName}</div><div class="bid">Batch: ${b.lotNumber || b.batchId}</div></div>
+        <div><div class="who">${b.wholesalerName}</div><div class="bid">Batch: ${b.lotNumber || b.batchId} · Arrival: ${b.arrivalDate || "—"}</div></div>
         <div class="rem">${fmtNum(b.bagsRemaining)} bags</div>
       </div>`).join("") + `</div>`;
+}
+
+// ---- Debug panel: raw totals so mismatches are easy to spot ----------------
+let debugVisible = false;
+function toggleDebug() {
+  debugVisible = !debugVisible;
+  document.getElementById("debug-box").style.display = debugVisible ? "block" : "none";
+}
+function renderDebug(liveStock, sales) {
+  const box = document.getElementById("debug-box");
+  const lines = [`Fetched ${new Date().toLocaleTimeString()}`, `Total batches (incoming records): ${liveStock.length}`, `Total sale records: ${sales.length}`, ""];
+  ["onions","garlic","tamarind"].forEach(pt => {
+    const b = liveStock.filter(x => x.productType === pt);
+    const totalIncoming = b.reduce((s,x)=>s+Number(x.bags||0),0);
+    const totalSold = b.reduce((s,x)=>s+Number(x.bagsSold||0),0);
+    const remaining = b.reduce((s,x)=>s+Number(x.bagsRemaining||0),0);
+    lines.push(`${pt.toUpperCase()}: incoming=${totalIncoming} sold=${totalSold} remaining=${remaining} (batches=${b.length})`);
+  });
+  box.textContent = lines.join("\n");
 }
 
 // ---- Pricing --------------------------------------------------------------
@@ -1376,7 +1035,6 @@ async function fetchPrice() {
   if (!res.ok) throw new Error(`Fetch failed (${res.status})`);
   return await res.json();
 }
-
 async function loadPriceBanner(elId) {
   const el = document.getElementById(elId);
   try {
@@ -1386,62 +1044,67 @@ async function loadPriceBanner(elId) {
     el.innerHTML = `
       <div class="p-block"><div class="p-num">₹${fmtNum(price.pricePerKg)}/kg</div><div class="p-lab">Today's Onion Price</div></div>
       <div class="p-block"><div class="p-num">₹${fmtNum(price.minPricePerKg)}/kg</div><div class="p-lab">Minimum Allowed Price</div></div>`;
-  } catch (err) {
-    console.error(err);
-    el.style.display = "none";
-  }
+  } catch (err) { console.error(err); el.style.display = "none"; }
 }
-
 function openOwnerSettings() {
   go("view-owner-settings");
   fetchPrice().then(price => {
     if (price) {
       document.getElementById("price-current").value = price.pricePerKg;
       document.getElementById("price-min").value = price.minPricePerKg;
-      document.getElementById("price-current-note").textContent =
-        `Last set ${price.dateLabel}, ${price.timeLabel} by ${price.setBy}`;
+      document.getElementById("price-current-note").textContent = `Last set ${price.dateLabel}, ${price.timeLabel} by ${price.setBy}`;
     } else {
       document.getElementById("price-current-note").textContent = "No price set yet today.";
     }
-  }).catch(err => {
-    console.error(err);
-    document.getElementById("price-current-note").textContent =
-      "Could not load current price — check your Worker URL / that the Worker is deployed with the latest code.";
-  });
+  }).catch(() => {});
 }
-
 async function savePricing() {
   const pricePerKg = document.getElementById("price-current").value;
   const minPricePerKg = document.getElementById("price-min").value;
   if (pricePerKg === "" || minPricePerKg === "") { showBanner("Enter both price fields.", "error"); return; }
   if (isNaN(pricePerKg) || isNaN(minPricePerKg)) { showBanner("Prices must be numbers.", "error"); return; }
   try {
-    const res = await fetch(`${WORKER_URL}/api/price`, {
+    await fetch(`${WORKER_URL}/api/price`, {
       method: "POST", headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ pricePerKg: Number(pricePerKg), minPricePerKg: Number(minPricePerKg), setBy: "Owner" })
     });
-    const data = await res.json().catch(() => ({}));
-    if (!res.ok) throw new Error(data.error || `Save failed (${res.status})`);
     showBanner("Price updated for today.", "success");
     go("view-dashboard");
+  } catch (err) { console.error(err); showBanner("Could not save price. Check connection.", "error"); }
+}
+
+// ---- Backup / export --------------------------------------------------------
+async function exportAllData() {
+  showBanner("Preparing backup...", "success");
+  try {
+    const [incoming, sales, price] = await Promise.all([
+      fetchIncoming(), fetchSales(), fetchPrice()
+    ]);
+    const payload = { exportedAt: new Date().toISOString(), incoming, sales, price };
+    const blob = new Blob([JSON.stringify(payload, null, 2)], { type: "application/json" });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement("a");
+    a.href = url;
+    a.download = `kr-onions-backup-${dateKeyFor()}.json`;
+    document.body.appendChild(a);
+    a.click();
+    document.body.removeChild(a);
+    URL.revokeObjectURL(url);
+    showBanner("Backup downloaded!", "success");
   } catch (err) {
     console.error(err);
-    showBanner(`Could not save price: ${err.message}`, "error");
+    showBanner("Could not create backup. Check connection.", "error");
   }
 }
 
-// ---- Owner Chatbot (rule-based, no server AI) ------------------------------
+// ---- Chatbot -----------------------------------------------------------------
 let chatbotReady = false;
 function initChatbot() {
   if (chatbotReady) return;
   chatbotReady = true;
-  const log = document.getElementById("chat-log");
-  log.innerHTML = `<div class="chat-bubble bot">Hi! Ask me things like "stock in Hanuman Junction", "sold today", "batch LOT-45", or "low stock".</div>`;
-  document.getElementById("chat-input").addEventListener("keydown", e => {
-    if (e.key === "Enter") sendChatMessage();
-  });
+  document.getElementById("chat-log").innerHTML = `<div class="chat-bubble bot">Hi! Ask me things like "stock in Hanuman Junction", "sold today", "batch LOT-45", or "low stock".</div>`;
+  document.getElementById("chat-input").addEventListener("keydown", e => { if (e.key === "Enter") sendChatMessage(); });
 }
-
 function addChatBubble(text, who) {
   const log = document.getElementById("chat-log");
   const bubble = document.createElement("div");
@@ -1450,7 +1113,6 @@ function addChatBubble(text, who) {
   log.appendChild(bubble);
   log.scrollTop = log.scrollHeight;
 }
-
 async function sendChatMessage() {
   const input = document.getElementById("chat-input");
   const q = input.value.trim();
@@ -1459,7 +1121,6 @@ async function sendChatMessage() {
   input.value = "";
   addChatBubble("Checking...", "bot");
   const log = document.getElementById("chat-log");
-
   try {
     const answer = await answerChatQuestion(q.toLowerCase());
     log.lastChild.textContent = answer;
@@ -1468,54 +1129,35 @@ async function sendChatMessage() {
     log.lastChild.textContent = "Sorry, couldn't fetch that — check the Worker connection.";
   }
 }
-
 async function answerChatQuestion(q) {
   const [liveStock, sales] = await Promise.all([fetchLiveStock(), fetchSales()]);
 
-  // "batch <code>"
   const batchMatch = q.match(/batch\s+([a-z0-9\-]+)/i);
   if (batchMatch) {
     const code = batchMatch[1].toLowerCase();
     const found = liveStock.filter(b => b.batchId.toLowerCase().includes(code) || String(b.lotNumber).toLowerCase().includes(code));
     if (found.length === 0) return `No batch found matching "${code}".`;
-    return found.map(b =>
-      `Batch ${b.lotNumber} (${b.wholesalerName}) — ${b.branchName}\n${lineLabel(b)}: ${fmtNum(b.bagsRemaining)} bags remaining of ${fmtNum(b.bags)} received`
-    ).join("\n\n");
+    return found.map(b => `Batch ${b.lotNumber} (${b.wholesalerName}) — ${b.branchName}, arrived ${b.arrivalDate}\n${lineLabel(b)}: ${fmtNum(b.bagsRemaining)} bags remaining of ${fmtNum(b.bags)} received`).join("\n\n");
   }
-
-  // "sold today" / "sales today"
   if (q.includes("sold") || q.includes("sales today")) {
     const today = dateKeyFor();
     const todaySales = sales.filter(s => s.dateKey === today);
     if (todaySales.length === 0) return "No sales recorded today yet.";
     const byBranch = {};
-    todaySales.forEach(s => {
-      byBranch[s.branchName] = byBranch[s.branchName] || { bags: 0 };
-      byBranch[s.branchName].bags += Number(s.bagsSold || 0);
-    });
+    todaySales.forEach(s => { byBranch[s.branchName] = byBranch[s.branchName] || { bags: 0 }; byBranch[s.branchName].bags += Number(s.bagsSold || 0); });
     return "Sold today:\n" + Object.entries(byBranch).map(([name, v]) => `${name}: ${fmtNum(v.bags)} bags`).join("\n");
   }
-
-  // "low stock"
   if (q.includes("low stock") || q.includes("low")) {
     const threshold = 20;
     const low = liveStock.filter(b => b.bagsRemaining > 0 && b.bagsRemaining < threshold);
     if (low.length === 0) return `No batches under ${threshold} bags remaining right now.`;
-    return `Batches running low (under ${threshold} bags):\n` + low.map(b =>
-      `${b.branchName} — ${lineLabel(b)} — ${b.wholesalerName} (Batch ${b.lotNumber}): ${fmtNum(b.bagsRemaining)} bags left`
-    ).join("\n");
+    return `Batches running low (under ${threshold} bags):\n` + low.map(b => `${b.branchName} — ${lineLabel(b)} — ${b.wholesalerName} (Batch ${b.lotNumber}): ${fmtNum(b.bagsRemaining)} bags left`).join("\n");
   }
-
-  // "which wholesaler stock is remaining"
   if (q.includes("wholesaler")) {
     const remaining = liveStock.filter(b => b.bagsRemaining > 0);
     if (remaining.length === 0) return "No wholesaler stock remaining.";
-    return "Remaining stock by wholesaler:\n" + remaining.map(b =>
-      `${b.wholesalerName} (Batch ${b.lotNumber}) — ${b.branchName}, ${lineLabel(b)}: ${fmtNum(b.bagsRemaining)} bags`
-    ).join("\n");
+    return "Remaining stock by wholesaler:\n" + remaining.map(b => `${b.wholesalerName} (Batch ${b.lotNumber}) — ${b.branchName}, ${lineLabel(b)}: ${fmtNum(b.bagsRemaining)} bags`).join("\n");
   }
-
-  // branch name mentioned -> full branch summary
   const branch = BRANCHES.find(b => q.includes(b.name.toLowerCase()));
   if (branch) {
     const batches = liveStock.filter(b => b.branchId === branch.id && b.bagsRemaining > 0);
@@ -1529,89 +1171,162 @@ async function answerChatQuestion(q) {
     if (garlic.length) lines.push(`Garlic: ${fmtNum(garlic.reduce((s,b)=>s+b.bagsRemaining,0))} bags`);
     const tamarind = batches.filter(b => b.productType === "tamarind");
     if (tamarind.length) lines.push(`Tamarind: ${fmtNum(tamarind.reduce((s,b)=>s+b.bagsRemaining,0))} bags`);
-
     lines.push("", "Top Wholesalers:");
-    batches.sort((a,b)=>b.bagsRemaining-a.bagsRemaining).slice(0,5).forEach(b => {
-      lines.push(`- ${b.wholesalerName} (Batch ${b.lotNumber}): ${fmtNum(b.bagsRemaining)} bags remaining`);
-    });
+    batches.sort((a,b)=>b.bagsRemaining-a.bagsRemaining).slice(0,5).forEach(b => lines.push(`- ${b.wholesalerName} (Batch ${b.lotNumber}): ${fmtNum(b.bagsRemaining)} bags remaining`));
     return lines.join("\n");
   }
-
   return `I can answer things like:\n- "What is stock in Hanuman Junction?"\n- "Which wholesaler stock is remaining?"\n- "How much stock sold today?"\n- "Show stock for batch LOT-45"\n- "Which batch is low stock?"`;
 }
 
-// ---- History -------------------------------------------------------------
+// ============================================================
+// HISTORY (arrivals + sales, filterable, editable, deletable)
+// ============================================================
 function openHistory() {
   stopDashboardPolling();
-  const dateInput = document.getElementById("f-date");
-  const branchSelect = document.getElementById("f-branch");
-  const productSelect = document.getElementById("f-product");
-  const typeSelect = document.getElementById("f-updatetype");
+  const dateInput = document.getElementById("h-date");
+  const branchSelect = document.getElementById("h-branch");
+  const productSelect = document.getElementById("h-product");
 
   dateInput.value = dateKeyFor();
-  branchSelect.innerHTML = '<option value="">All Branches</option>' +
-    BRANCHES.map(b => `<option value="${b.id}">${b.name}</option>`).join("");
-  productSelect.innerHTML = '<option value="">All Products</option>' +
-    PRODUCTS.map(p => `<option value="${p.id}">${p.name}</option>`).join("");
-  typeSelect.innerHTML = '<option value="">Both (Before Lunch &amp; Closing)</option>' +
-    UPDATE_TYPES.map(u => `<option value="${u.id}">${u.name}</option>`).join("");
+  branchSelect.innerHTML = '<option value="">All Branches</option>' + BRANCHES.map(b => `<option value="${b.id}">${b.name}</option>`).join("");
+  productSelect.innerHTML = '<option value="">All Products</option>' + PRODUCTS.map(p => `<option value="${p.id}">${p.name}</option>`).join("");
 
-  const loadResults = async () => {
-    const results = document.getElementById("history-results");
-    results.innerHTML = "Loading...";
-    try {
-      const rawRows = await fetchRecords(dateInput.value, {
-        branch: branchSelect.value, product: productSelect.value, updateType: typeSelect.value
-      });
-      const rows = dedupeLatestPerKey(rawRows);
-      if (rows.length === 0) {
-        results.innerHTML = `<div class="empty-state">No stock records found for this date / filter.</div>`;
-        return;
-      }
-      results.innerHTML = rows.map(r => `
-        <div class="record-row">
-          <div class="top"><span>KR Onions - ${r.branchName}</span><span>${r.timeLabel}</span></div>
-          <div class="sub">${lineLabel(r)} · Updated by ${r.managerName}</div>
-          <div class="nums"><span><strong>${fmtNum(r.bags)}</strong> bags</span><span><strong>${fmtNum(r.kgs)}</strong> kgs</span></div>
-          ${r.notes ? `<div class="sub" style="margin-top:6px;">📝 ${r.notes}</div>` : ""}
-          <div class="tag">${updateTypeLabel(r.updateType)}</div>
-        </div>`).join("");
-    } catch (err) {
-      console.error(err);
-      results.innerHTML = `<div class="empty-state">Could not load history.<br>Check your Worker URL / internet connection.</div>`;
-    }
-  };
-
-  [dateInput, branchSelect, productSelect, typeSelect].forEach(el => { el.onchange = loadResults; });
-  loadResults();
+  [dateInput, branchSelect, productSelect].forEach(el => { el.onchange = loadHistory; });
+  loadHistory();
   go("view-history");
 }
 
-// ---- Keep only the latest save per branch+product+variety+updateType -------
-// Solves "manager saved the wrong number, then saved again to fix it" —
-// the corrected (latest) save is what shows in history; the earlier
-// mistaken one is superseded, not deleted, but no longer displayed.
-function dedupeLatestPerKey(rows) {
-  const latestByKey = {};
-  rows.forEach(r => {
-    const key = `${r.branchId}:${r.productType}:${r.variety}:${r.updateType}`;
-    if (!latestByKey[key] || r.createdAt > latestByKey[key].createdAt) latestByKey[key] = r;
-  });
-  return Object.values(latestByKey).sort((a,b) => (b.createdAt||"").localeCompare(a.createdAt||""));
+async function loadHistory() {
+  const date = document.getElementById("h-date").value;
+  const branch = document.getElementById("h-branch").value;
+  const product = document.getElementById("h-product").value;
+
+  const arrivalsBox = document.getElementById("h-arrivals");
+  const salesBox = document.getElementById("h-sales");
+  const summaryBox = document.getElementById("h-summary");
+  arrivalsBox.innerHTML = "Loading...";
+  salesBox.innerHTML = "Loading...";
+  summaryBox.innerHTML = "";
+
+  try {
+    let [incoming, sales] = await Promise.all([
+      fetchIncoming({ branch: branch || undefined, date }),
+      fetchSales({ branch: branch || undefined, date })
+    ]);
+    if (product) {
+      incoming = incoming.filter(r => r.productType === product);
+      sales = sales.filter(r => r.productType === product);
+    }
+    state.historyArrivals = incoming;
+    state.historySales = sales;
+
+    // Totals per product — never mixed together.
+    const totalsHtml = ["onions","garlic","tamarind"].map(pt => {
+      const inc = incoming.filter(r => r.productType === pt).reduce((s,r)=>s+Number(r.bags||0),0);
+      const sold = sales.filter(r => r.productType === pt).reduce((s,r)=>s+Number(r.bagsSold||0),0);
+      if (inc === 0 && sold === 0) return "";
+      return `<div class="onions-total-line"><span>${pt.charAt(0).toUpperCase()+pt.slice(1)}</span><span>Incoming: ${fmtNum(inc)} · Sold: ${fmtNum(sold)}</span></div>`;
+    }).join("");
+    summaryBox.innerHTML = totalsHtml || "";
+
+    arrivalsBox.innerHTML = incoming.length === 0
+      ? `<div class="empty-state">No stock arrivals for this date / filter.</div>`
+      : incoming.map(r => `
+        <div class="record-row">
+          <div class="top"><span>${r.wholesalerName}</span><span>${r.timeLabel}</span></div>
+          <div class="sub">${lineLabel(r)} · Batch ${r.lotNumber} · KR Onions - ${r.branchName}</div>
+          <div class="nums"><span><strong>${fmtNum(r.bags)}</strong> bags</span><span><strong>${fmtNum(r.kgs)}</strong> kgs</span></div>
+          <div class="tag">Arrival: ${r.arrivalDate}</div>
+          ${r.purchasePrice != null ? `<div class="tag">₹${r.purchasePrice}/kg</div>` : ""}
+          ${r.notes ? `<div class="sub" style="margin-top:6px;">📝 ${r.notes}</div>` : ""}
+          <div class="row-actions">
+            <button class="btn btn-ghost btn-sm" onclick='editIncomingFromHistory("${r._key}")'>✏️ Edit</button>
+            <button class="btn btn-danger btn-sm" onclick='deleteIncomingFromHistory("${r._key}")'>🗑️ Delete</button>
+          </div>
+        </div>`).join("");
+
+    salesBox.innerHTML = sales.length === 0
+      ? `<div class="empty-state">No sales for this date / filter.</div>`
+      : sales.map(r => `
+        <div class="record-row">
+          <div class="top"><span>${r.wholesalerName}</span><span>${r.timeLabel}</span></div>
+          <div class="sub">${lineLabel(r)} · Batch ${r.batchId} · Arrival: ${r.arrivalDate || "—"} · KR Onions - ${r.branchName}</div>
+          <div class="nums"><span><strong>${fmtNum(r.bagsSold)}</strong> bags sold</span><span><strong>${fmtNum(r.kgsSold)}</strong> kgs sold</span></div>
+          <div class="sub" style="margin-top:4px;">Updated by ${r.managerName}</div>
+          ${r.notes ? `<div class="sub" style="margin-top:6px;">📝 ${r.notes}</div>` : ""}
+          <div class="row-actions">
+            <button class="btn btn-ghost btn-sm" onclick='openEditSale("${r._key}")'>✏️ Edit</button>
+            <button class="btn btn-danger btn-sm" onclick='deleteSaleFromHistory("${r._key}")'>🗑️ Delete</button>
+          </div>
+        </div>`).join("");
+  } catch (err) {
+    console.error(err);
+    arrivalsBox.innerHTML = `<div class="empty-state">Could not load history.<br>Check your Worker URL / internet connection.</div>`;
+    salesBox.innerHTML = "";
+  }
 }
 
-// ---- Backend fetch helper --------------------------------------------------
-async function fetchRecords(dateKey, filters = {}) {
-  const params = new URLSearchParams({ date: dateKey });
-  if (filters.branch) params.set("branch", filters.branch);
-  if (filters.product) params.set("product", filters.product);
-  if (filters.updateType) params.set("updateType", filters.updateType);
-  const res = await fetch(`${WORKER_URL}/api/records?${params.toString()}`);
-  if (!res.ok) throw new Error(`Fetch failed (${res.status})`);
-  const rows = await res.json();
-  rows.sort((a,b) => (b.createdAt||"").localeCompare(a.createdAt||""));
-  return rows;
+function editIncomingFromHistory(key) {
+  const rec = (state.historyArrivals || []).find(r => r._key === key);
+  if (!rec) { showBanner("Record not found — refresh and try again.", "error"); return; }
+  // History edit doesn't have a branch-manager session; borrow branch context from the record.
+  state.branchId = rec.branchId; state.branchName = rec.branchName;
+  openStockArrival(rec);
 }
+
+async function deleteIncomingFromHistory(key) {
+  if (!confirm("Delete this stock arrival? This cannot be undone.")) return;
+  try {
+    const res = await fetch(`${WORKER_URL}/api/incoming?key=${encodeURIComponent(key)}`, { method: "DELETE" });
+    if (!res.ok) throw new Error("Delete failed");
+    showBanner("Stock arrival deleted.", "success");
+    loadHistory();
+  } catch (err) { console.error(err); showBanner("Could not delete. Check connection.", "error"); }
+}
+
+function openEditSale(key) {
+  const rec = (state.historySales || []).find(r => r._key === key);
+  if (!rec) { showBanner("Record not found — refresh and try again.", "error"); return; }
+  state.editSaleKey = key;
+  document.getElementById("es-context").textContent = `${rec.wholesalerName} · Batch ${rec.batchId} · ${lineLabel(rec)}`;
+  document.getElementById("es-bags").value = rec.bagsSold;
+  document.getElementById("es-kgs").value = rec.kgsSold;
+  document.getElementById("es-notes").value = rec.notes || "";
+  go("view-edit-sale");
+}
+
+async function saveEditSale() {
+  const bags = document.getElementById("es-bags").value;
+  const kgs = document.getElementById("es-kgs").value;
+  const notes = document.getElementById("es-notes").value.trim();
+  if (bags === "" || kgs === "" || isNaN(bags) || isNaN(kgs) || Number(bags) < 0 || Number(kgs) < 0) {
+    showBanner("Enter valid bags and kgs sold.", "error"); return;
+  }
+  try {
+    const res = await fetch(`${WORKER_URL}/api/sales`, {
+      method: "PATCH", headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ key: state.editSaleKey, bagsSold: Number(bags), kgsSold: Number(kgs), notes })
+    });
+    const data = await res.json().catch(() => ({}));
+    if (!res.ok) throw new Error(data.error || "Update failed");
+    showBanner("Sale updated.", "success");
+    go("view-history");
+    loadHistory();
+  } catch (err) { console.error(err); showBanner(err.message || "Could not update. Check connection.", "error"); }
+}
+
+async function deleteSaleFromHistory(key) {
+  if (!confirm("Delete this sale? This cannot be undone.")) return;
+  try {
+    const res = await fetch(`${WORKER_URL}/api/sales?key=${encodeURIComponent(key)}`, { method: "DELETE" });
+    if (!res.ok) throw new Error("Delete failed");
+    showBanner("Sale deleted.", "success");
+    loadHistory();
+  } catch (err) { console.error(err); showBanner("Could not delete. Check connection.", "error"); }
+}
+
+// ---- Accordion toggle (shared) ----------------------------------------------
+function toggleAccordion(id) { document.getElementById(id).classList.toggle("open"); }
 </script>
 </body>
 </html>
